@@ -1,0 +1,50 @@
+{
+  "name": "koi-electron",
+  "version": "1.0.0",
+  "author": "zuiaibaicaiya(最爱白菜呀)<1355081829@qq.com>",
+  "license": "MIT",
+  "description": "",
+  "main": "koi-ui/dist/electron/main.cjs",
+  "scripts": {
+    "dev": "turbo dev",
+    "preview": "turbo build && electron .",
+    "build": "turbo build && electron-builder"
+  },
+  "workspaces": [
+    "koi-ui",
+    "koi-server",
+    "examples/*"
+  ],
+  "packageManager": "npm@10.9.2",
+  "devDependencies": {
+    "electron": "^39.2.0",
+    "electron-builder": "^26.0.12",
+    "turbo": "^2.6.1"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.0.1",
+    "@nestjs/core": "^11.0.1",
+    "@nestjs/mapped-types": "*",
+    "@nestjs/platform-express": "^11.0.1",
+    "@nestjs/swagger": "^11.2.1",
+    "bcryptjs": "^3.0.3",
+    "bytenode": "^1.5.7",
+    "electron-store": "^11.0.2",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1"
+  },
+  "build": {
+    "icon": "logo.png",
+    "directories": {
+      "output": "build-electron"
+    },
+    "extraResources": [],
+    "files": [
+      "koi-ui/dist",
+      "koi-server/dist"
+    ],
+    "dmg": {
+      "icon": "./logo.icns"
+    }
+  }
+}
