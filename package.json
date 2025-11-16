@@ -13,6 +13,7 @@
   "workspaces": [
     "koi-ui",
     "koi-server",
+    "packages/*",
     "examples/*"
   ],
   "packageManager": "npm@10.9.2",
