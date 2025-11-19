@@ -2,6 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import cluster from 'node:cluster';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { InitModule } from './api/init/init.module';
+import { InitController } from './api/init/init.controller';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -21,7 +23,14 @@ async function bootstrap() {
     console.log(`Listening on http://127.0.0.1:${port}/api`);
   });
 }
+async function init() {
+  const app = await NestFactory.createApplicationContext(AppModule);
+  const initController = app.select(InitModule).get(InitController);
+  initController.create({});
+  await app.close();
+}
 if (cluster.isPrimary) {
+  void init();
   cluster.fork();
   cluster.on('exit', (worker) => {
     cluster.fork();
