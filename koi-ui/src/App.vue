@@ -4,7 +4,16 @@
     <p>Start building amazing things with Rsbuild.</p>
   </div>
 </template>
-
+<script setup lang="ts">
+import Store from 'electron-store'
+import { onMounted } from 'vue';
+const store = new Store({
+  name: 'koi-box',
+});
+onMounted(() => {
+  console.log(store.get('storage'));
+})
+</script>
 <style scoped>
 .content {
   display: flex;
