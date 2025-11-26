@@ -112,10 +112,9 @@ if (!gotTheLock) {
     });
 
     if (!__IS_DEV__) {
-      const configPath = join(app.getPath('userData'), 'koi-box.json');
+      const configPath = store.path;
       const { signal } = controller;
       const koiServer = fork(
-        // join(__dirname, '../../../koi-server', 'dist', 'main.js'),
         join(app.getAppPath(), 'koi-server', 'dist', 'main.js'),
         {
           signal,
