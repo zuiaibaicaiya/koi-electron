@@ -1,11 +1,18 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import { useConfigStore } from '@/store/config.ts';
+const KoiLayout = () => import('@/layout/KoiLayout.vue');
 const Home = () => import('@/pages/home/index.vue');
 const Setting = () => import('@/pages/setting/index.vue');
 const routes = [
   {
     path: '/',
-    component: Home,
+    component: KoiLayout,
+    children: [
+      {
+        path: '',
+        component: Home,
+      },
+    ],
   },
   {
     path: '/setting',

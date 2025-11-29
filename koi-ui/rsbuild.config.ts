@@ -4,11 +4,13 @@ import { pluginNodePolyfill } from '@rsbuild/plugin-node-polyfill';
 import { electronRs } from 'electron-rs';
 import Components from 'unplugin-vue-components/rspack';
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
+import { pluginSass } from '@rsbuild/plugin-sass';
 
 // Docs: https://rsbuild.rs/config/
 export default defineConfig({
   plugins: [
     pluginVue(),
+    pluginSass(),
     electronRs({
       ignorePack: true,
       obfuscator: {
