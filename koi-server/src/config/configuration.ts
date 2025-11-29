@@ -18,7 +18,7 @@ export default () => {
         'AppData',
         'Roaming',
         'Electron',
-        'koi-box.json',
+        'koi-koi-electron.json',
       );
     } else {
       configFile = join(
@@ -26,7 +26,7 @@ export default () => {
         'Library',
         'Application Support',
         'Electron',
-        'koi-box.json',
+        'koi-electron.json',
       );
     }
   }

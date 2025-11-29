@@ -23,11 +23,11 @@ interface IStore {
 }
 
 const store = new Store<IStore>({
-  name: 'koi-box',
+  name: 'koi-electron',
   defaults: {
     init: false,
-    storage: join(homedir(), 'koi-box', 'storage'),
-    backup: join(homedir(), 'koi-box', 'backup'),
+    storage: join(homedir(), 'koi-electron', 'storage'),
+    backup: join(homedir(), 'koi-electron', 'backup'),
   },
 });
 async function handleDirectoryOpen() {

@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "turbo dev",
     "preview": "turbo build && electron .",
+    "postinstall": "rimraf .turbo && electron-builder install-app-deps",
     "build": "turbo build && electron-builder"
   },
   "workspaces": [
@@ -20,6 +21,7 @@
   "devDependencies": {
     "electron": "^39.2.3",
     "electron-builder": "^26.0.12",
+    "electron-rs": "^1.1.2",
     "turbo": "^2.6.1"
   },
   "dependencies": {
