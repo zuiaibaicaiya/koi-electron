@@ -1,5 +1,19 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
+
+import type { TabsPaneContext } from 'element-plus';
+
+const activeName = ref('home');
+const tabList = ref([
+  {
+    label: 'Home',
+  },
+]);
+const handleClick = (tab: TabsPaneContext, event: Event) => {
+  // console.log(tab, event);
+  console.log(tab);
+};
+
 const activeIndex = ref('1');
 const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
@@ -7,7 +21,7 @@ const handleSelect = (key: string, keyPath: string[]) => {
 </script>
 
 <template>
-  <div class="common-layout">
+  <div class="koi-layout">
     <el-container>
       <el-header>
         <el-menu
@@ -33,8 +47,27 @@ const handleSelect = (key: string, keyPath: string[]) => {
           <el-menu-item index="4">Orders</el-menu-item>
         </el-menu>
       </el-header>
+      <el-tabs
+        v-model="activeName"
+        class="demo-tabs"
+        editable
+        @tab-click="handleClick"
+      >
+        <el-tab-pane name="home">
+          <template #label>
+            <router-link to="/">home</router-link>
+          </template>
+        </el-tab-pane>
+        <el-tab-pane name="user">
+          <template #label>
+            <router-link to="/user">user</router-link>
+          </template>
+        </el-tab-pane>
+      </el-tabs>
+
       <el-container>
         <el-aside width="200px">Aside</el-aside>
+
         <el-main>
           <router-view></router-view>
         </el-main>
@@ -42,8 +75,18 @@ const handleSelect = (key: string, keyPath: string[]) => {
     </el-container>
   </div>
 </template>
-<style lang="sass" scoped>
-.el-menu--horizontal {
-  --el-menu-horizontal-height: 40px ;
+
+<style lang="scss" scoped>
+.koi-layout {
+  :deep(.el-header) {
+    --el-header-padding: 0 auto;
+    --el-header-height: 40px;
+  }
+  :deep(.el-main) {
+    --el-main-padding: 0;
+  }
+  :deep(.el-menu--horizontal) {
+    --el-menu-horizontal-height: 40px;
+  }
 }
 </style>

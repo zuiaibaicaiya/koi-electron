@@ -1,3 +1,4 @@
-/*.el-menu--horizontal {*/
-/*  --el-menu-horizontal-height: 40px !important;*/
-/*}*/
+body{
+  padding: 0;
+  margin: 0 auto;
+}

@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 import { useConfigStore } from '@/store/config.ts';
 const KoiLayout = () => import('@/layout/KoiLayout.vue');
 const Home = () => import('@/pages/home/index.vue');
+const User = () => import('@/pages/user/index.vue');
 const Setting = () => import('@/pages/setting/index.vue');
 const routes = [
   {
@@ -11,6 +12,10 @@ const routes = [
       {
         path: '',
         component: Home,
+      },
+      {
+        path: '/user',
+        component: User,
       },
     ],
   },
@@ -26,7 +31,6 @@ const router = createRouter({
 const whiteList = ['/setting'];
 router.beforeEach((to, _from, next) => {
   const configStore = useConfigStore();
-  console.log(configStore.storage);
   if (whiteList.includes(to.path)) {
     next();
   } else {
