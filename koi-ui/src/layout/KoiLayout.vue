@@ -1,22 +1,24 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, watchPostEffect } from 'vue';
 
 import type { TabsPaneContext } from 'element-plus';
-
-const activeName = ref('home');
-const tabList = ref([
-  {
-    label: 'Home',
-  },
-]);
+import { useRoute, useRouter } from 'vue-router';
+import { useTabView } from '@/store/tabView.ts';
+const tabView = useTabView();
+const route = useRoute();
+const router = useRouter();
+const activeName = ref(route.fullPath);
+const activeIndex = ref(route.fullPath);
+watchPostEffect(() => {
+  activeIndex.value = route.fullPath;
+  activeName.value = route.fullPath;
+});
 const handleClick = (tab: TabsPaneContext, event: Event) => {
-  // console.log(tab, event);
-  console.log(tab);
+  router.push(tab.props!.name);
 };
 
-const activeIndex = ref('1');
-const handleSelect = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
+const handleSelect = (key: string, keyPath: string[], item) => {
+  // tabView.addTag(key);
 };
 </script>
 
@@ -30,7 +32,16 @@ const handleSelect = (key: string, keyPath: string[]) => {
           mode="horizontal"
           @select="handleSelect"
         >
-          <el-menu-item index="1">Processing Center</el-menu-item>
+          <el-menu-item index="/">
+            <template #title>
+              <router-link to="/"> home </router-link>
+            </template>
+          </el-menu-item>
+          <el-menu-item index="/user">
+            <template #title>
+              <router-link to="/user"> user </router-link>
+            </template>
+          </el-menu-item>
           <el-sub-menu index="2">
             <template #title>Workspace</template>
             <el-menu-item index="2-1">item one</el-menu-item>
@@ -47,29 +58,22 @@ const handleSelect = (key: string, keyPath: string[]) => {
           <el-menu-item index="4">Orders</el-menu-item>
         </el-menu>
       </el-header>
-      <el-tabs
-        v-model="activeName"
-        class="demo-tabs"
-        editable
-        @tab-click="handleClick"
-      >
-        <el-tab-pane name="home">
-          <template #label>
-            <router-link to="/">home</router-link>
-          </template>
-        </el-tab-pane>
-        <el-tab-pane name="user">
-          <template #label>
-            <router-link to="/user">user</router-link>
-          </template>
-        </el-tab-pane>
+      <el-tabs v-model="activeName" editable @tab-click="handleClick">
+        <el-tab-pane
+          v-for="item in tabView.tabViewList"
+          :name="item.fullPath"
+          :key="item.fullPath"
+          :label="item.meta.title"
+        />
       </el-tabs>
 
       <el-container>
-        <el-aside width="200px">Aside</el-aside>
-
         <el-main>
-          <router-view></router-view>
+          <router-view v-slot="{ Component }">
+            <keep-alive>
+              <component :is="Component" />
+            </keep-alive>
+          </router-view>
         </el-main>
       </el-container>
     </el-container>
