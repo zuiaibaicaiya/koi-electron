@@ -29,6 +29,7 @@
   ],
   "scripts": {
     "build": "rslib build",
+    "stub": "rslib build",
     "format": "prettier --write .",
     "lint": "eslint ."
   },

@@ -7,8 +7,9 @@
   "main": "koi-ui/dist/electron/main.cjs",
   "scripts": {
     "dev": "turbo dev",
+    "stub": "turbo stub",
     "preview": "turbo build && electron .",
-    "postinstall": "rimraf .turbo && electron-builder install-app-deps",
+    "postinstall": "rimraf .turbo && electron-builder install-app-deps && npm run stub",
     "build": "turbo build && electron-builder"
   },
   "workspaces": [

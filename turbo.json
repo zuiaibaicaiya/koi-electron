@@ -4,6 +4,9 @@
     "build": {
       "dependsOn": ["^build"]
     },
+    "stub": {
+      "dependsOn": ["^stub"]
+    },
     "app-ui#build": {
       "cache": false,
       "dependsOn": ["koi-server#build"]
