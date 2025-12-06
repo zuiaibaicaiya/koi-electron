@@ -48,6 +48,7 @@ const createWindow = async () => {
     },
   };
   mainWindow = new BrowserWindow(config);
+  mainWindow.maximize();
   const storage = store.get<string>('storage');
   if (process.env['ELECTRON_RENDERER_URL']) {
     if (storage) {

@@ -1,6 +1,12 @@
 <script lang="ts" setup>
 import { ref, watchPostEffect } from 'vue';
-
+import {
+  Search,
+  Folder,
+  DArrowLeft,
+  DArrowRight,
+  Setting,
+} from '@element-plus/icons-vue';
 import type { TabsPaneContext } from 'element-plus';
 import { useRoute, useRouter } from 'vue-router';
 import { useTabView } from '@/store/tabView.ts';
@@ -9,6 +15,7 @@ const route = useRoute();
 const router = useRouter();
 const activeName = ref(route.fullPath);
 const activeIndex = ref(route.fullPath);
+const sideState = ref(true);
 watchPostEffect(() => {
   activeIndex.value = route.fullPath;
   activeName.value = route.fullPath;
@@ -20,6 +27,9 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
 const handleSelect = (key: string, keyPath: string[], item) => {
   // tabView.addTag(key);
 };
+function sideHandle() {
+  sideState.value = !sideState.value;
+}
 </script>
 
 <template>
@@ -58,17 +68,40 @@ const handleSelect = (key: string, keyPath: string[], item) => {
           <el-menu-item index="4">Orders</el-menu-item>
         </el-menu>
       </el-header>
-      <el-tabs v-model="activeName" editable @tab-click="handleClick">
-        <el-tab-pane
-          v-for="item in tabView.tabViewList"
-          :name="item.fullPath"
-          :key="item.fullPath"
-          :label="item.meta.title"
-        />
-      </el-tabs>
 
       <el-container>
+        <el-aside :class="{ side: true, open: sideState, closed: !sideState }">
+          <div v-if="sideState">
+            <el-row justify="space-between">
+              <el-col :span="16">
+                <el-button :icon="Search" type="text" />
+              </el-col>
+              <el-col :span="8">
+                <el-button :icon="Search" type="text" />
+                <el-button :icon="Folder" type="text" />
+                <el-button :icon="Setting" type="text" />
+                <el-button :icon="DArrowLeft" type="text" @click="sideHandle" />
+              </el-col>
+            </el-row>
+            <el-scrollbar style="height: 100vh">
+              <p v-for="item in 50" :key="item">
+                {{ item }}
+              </p>
+            </el-scrollbar>
+          </div>
+          <div v-else style="text-align: center">
+            <el-button :icon="DArrowRight" type="text" @click="sideHandle" />
+          </div>
+        </el-aside>
         <el-main>
+          <el-tabs v-model="activeName" editable @tab-click="handleClick">
+            <el-tab-pane
+              v-for="item in tabView.tabViewList"
+              :name="item.fullPath"
+              :key="item.fullPath"
+              :label="item.meta.title"
+            />
+          </el-tabs>
           <router-view v-slot="{ Component }">
             <keep-alive>
               <component :is="Component" />
@@ -82,6 +115,18 @@ const handleSelect = (key: string, keyPath: string[], item) => {
 
 <style lang="scss" scoped>
 .koi-layout {
+  & .side {
+    height: 100vh;
+    margin: 4px;
+    overflow-y: hidden;
+    &.open {
+      --el-aside-width: 300px;
+    }
+    &.closed {
+      --el-aside-width: 40px;
+    }
+  }
+
   :deep(.el-header) {
     --el-header-padding: 0 auto;
     --el-header-height: 40px;
