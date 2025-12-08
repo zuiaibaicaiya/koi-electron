@@ -72,22 +72,30 @@ function sideHandle() {
       <el-container>
         <el-aside :class="{ side: true, open: sideState, closed: !sideState }">
           <div v-if="sideState">
-            <el-row justify="space-between">
-              <el-col :span="16">
-                <el-button :icon="Search" type="text" />
-              </el-col>
-              <el-col :span="8">
-                <el-button :icon="Search" type="text" />
-                <el-button :icon="Folder" type="text" />
-                <el-button :icon="Setting" type="text" />
-                <el-button :icon="DArrowLeft" type="text" @click="sideHandle" />
-              </el-col>
-            </el-row>
-            <el-scrollbar style="height: 100vh">
-              <p v-for="item in 50" :key="item">
-                {{ item }}
-              </p>
-            </el-scrollbar>
+            <el-card>
+              <template #header>
+                <el-row justify="space-between">
+                  <el-col :span="12">
+                    <el-button :icon="Search" type="text" />
+                  </el-col>
+                  <el-col :span="12" style="flex: none">
+                    <el-button :icon="Search" type="text" />
+                    <el-button :icon="Folder" type="text" />
+                    <el-button :icon="Setting" type="text" />
+                    <el-button
+                      :icon="DArrowLeft"
+                      type="text"
+                      @click="sideHandle"
+                    />
+                  </el-col>
+                </el-row>
+              </template>
+              <el-scrollbar style="height: 100vh">
+                <p v-for="item in 50" :key="item">
+                  {{ item }}
+                </p>
+              </el-scrollbar>
+            </el-card>
           </div>
           <div v-else style="text-align: center">
             <el-button :icon="DArrowRight" type="text" @click="sideHandle" />
@@ -115,9 +123,12 @@ function sideHandle() {
 
 <style lang="scss" scoped>
 .koi-layout {
+  :deep(.el-card) {
+    --el-card-padding: 0;
+  }
   & .side {
     height: 100vh;
-    margin: 4px;
+    margin: 0 6px;
     overflow-y: hidden;
     &.open {
       --el-aside-width: 300px;
