@@ -100,7 +100,7 @@ if (!gotTheLock) {
   });
   app.whenReady().then(async () => {
     ipcMain.handle('dialog:openDirectory', handleDirectoryOpen);
-    await createWindow();
+    createWindow();
     globalShortcut.register('CommandOrControl+Shift+E', () => {
       store.openInEditor();
     });

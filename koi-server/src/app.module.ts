@@ -8,6 +8,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from '@/config/configuration';
 import type { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { join } from 'node:path';
+import { DictModule } from './api/dict/dict.module';
+import { LogModule } from './api/log/log.module';
 
 @Module({
   imports: [
@@ -32,6 +34,8 @@ import { join } from 'node:path';
     }),
     UserModule,
     InitModule,
+    DictModule,
+    LogModule,
   ],
   controllers: [AppController],
   providers: [AppService],

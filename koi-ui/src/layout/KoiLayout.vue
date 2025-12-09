@@ -128,7 +128,7 @@ function sideHandle() {
   }
   & .side {
     height: 100vh;
-    margin: 0 6px;
+    margin: 6px 6px 0 0;
     overflow-y: hidden;
     &.open {
       --el-aside-width: 300px;
