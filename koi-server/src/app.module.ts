@@ -3,13 +3,13 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './api/user/user.module';
 import { InitModule } from './api/init/init.module';
+import type { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from '@/config/configuration';
-import type { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { join } from 'node:path';
-import { DictModule } from './api/dict/dict.module';
-import { LogModule } from './api/log/log.module';
+import { RoleModule } from './api/role/role.module';
+import { PermissionModule } from './api/permission/permission.module';
 
 @Module({
   imports: [
@@ -34,8 +34,8 @@ import { LogModule } from './api/log/log.module';
     }),
     UserModule,
     InitModule,
-    DictModule,
-    LogModule,
+    RoleModule,
+    PermissionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

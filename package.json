@@ -1,9 +1,12 @@
 {
   "name": "koi-electron",
   "version": "1.0.0",
-  "author": "zuiaibaicaiya(最爱白菜呀)<1355081829@qq.com>",
+  "author": {
+    "name": "zuiaibaicaiya(最爱白菜呀)",
+    "email": "1355081829@qq.com"
+  },
   "license": "MIT",
-  "description": "",
+  "description": "基于electron+nestjs+typeorm+vue+rsbuild的桌面开发方案",
   "main": "koi-ui/dist/electron/main.cjs",
   "scripts": {
     "dev": "turbo dev",
@@ -35,11 +38,13 @@
     "@nestjs/typeorm": "^11.0.0",
     "bcryptjs": "^3.0.3",
     "bytenode": "^1.5.7",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.3",
     "electron-store": "^11.0.2",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "sqlite3": "^5.1.7",
-    "typeorm": "^0.3.27"
+    "typeorm": "^0.3.28"
   },
   "build": {
     "icon": "logo.png",

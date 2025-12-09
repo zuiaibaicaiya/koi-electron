@@ -1,7 +1,8 @@
 import fs from 'node:fs';
 import { join } from 'node:path';
-import { homedir } from 'node:os';
 import * as os from 'node:os';
+import { homedir } from 'node:os';
+
 function checkDirExists(dir: string) {
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });

@@ -4,13 +4,21 @@ import cluster from 'node:cluster';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { InitModule } from './api/init/init.module';
 import { InitController } from './api/init/init.controller';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
-
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      skipNullProperties: true,
+      skipMissingProperties: true,
+      stopAtFirstError: true,
+    }),
+  );
   const config = new DocumentBuilder()
-    .setTitle('koi-server')
+    .setTitle('koi-electron')
     .setContact('最爱白菜呀', '', '1355081829@qq.com')
     .setDescription('koi-electron API 文档')
     .setVersion('1.0')
