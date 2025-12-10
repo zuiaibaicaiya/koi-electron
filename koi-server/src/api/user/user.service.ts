@@ -17,21 +17,26 @@ export class UserService {
 
   findAll(page = 1, pageSize = 16) {
     return this.usersRepository
-      .createQueryBuilder()
+      .createQueryBuilder('users')
+      .leftJoinAndSelect('users.role', 'role')
       .skip((page - 1) * pageSize)
       .take(pageSize)
       .getManyAndCount();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} user`;
+    return this.usersRepository
+      .createQueryBuilder('users')
+      .leftJoinAndSelect('users.role', 'role')
+      .where('users.id = :id', { id })
+      .getOne();
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+    return this.usersRepository.update(id, updateUserDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} user`;
+    return this.usersRepository.softDelete(id);
   }
 }

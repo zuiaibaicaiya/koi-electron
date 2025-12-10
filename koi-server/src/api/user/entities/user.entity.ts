@@ -41,7 +41,7 @@ export class User {
   })
   @OneToOne(() => Role, { createForeignKeyConstraints: false })
   @JoinColumn()
-  Role: Relation<Role>;
+  role: Relation<Role>;
 
   @CreateDateColumn()
   createdAt: Date;

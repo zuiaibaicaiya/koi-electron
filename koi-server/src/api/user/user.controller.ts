@@ -11,7 +11,7 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { error, paginate, success } from '@/utils/response';
 import { RoleService } from '@/api/role/role.service';
 import { ApiSuccessResponse } from '@/decorators/api-success-response/api-success-response.decorator';
@@ -62,18 +62,73 @@ export class UserController {
     return paginate(items, total, page, pageSize);
   }
 
+  @ApiOperation({
+    summary: '用户详情',
+    operationId: 'getUser',
+  })
+  @ApiSuccessResponse(User)
+  @ApiParam({
+    name: 'id',
+    description: '用户id',
+  })
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const user = await this.userService.findOne(+id);
+    if (!user) {
+      return error();
+    }
+    return success(user);
   }
 
+  @ApiOperation({
+    summary: '更新用户',
+    operationId: 'updateUser',
+  })
+  @ApiSuccessResponse()
+  @ApiParam({
+    name: 'id',
+    description: '用户id',
+  })
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    console.log(updateUserDto);
+    const user = await this.userService.findOne(+id);
+    if (!user) {
+      return error('用户不存在');
+    }
+    if (updateUserDto.roleId) {
+      const role = await this.roleService.findOne(+id);
+      if (role) {
+        updateUserDto.role = role;
+      }
+    }
+    delete updateUserDto.roleId;
+    const { affected } = await this.userService.update(+id, updateUserDto);
+    if (affected) {
+      return success();
+    }
+    return error();
   }
 
+  @ApiOperation({
+    summary: '删除用户',
+    operationId: 'deleteUser',
+  })
+  @ApiSuccessResponse()
+  @ApiParam({
+    name: 'id',
+    description: '用户id',
+  })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  async remove(@Param('id') id: string) {
+    const user = await this.userService.findOne(+id);
+    if (!user) {
+      return error('用户不存在');
+    }
+    const { affected } = await this.userService.remove(+id);
+    if (affected) {
+      return success();
+    }
+    return error();
   }
 }
