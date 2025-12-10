@@ -22,8 +22,10 @@ export class Role {
 
   @ApiProperty({
     description: '角色权限',
+    isArray: true,
+    type: () => Permission,
   })
   @ManyToMany(() => Permission, { createForeignKeyConstraints: false })
   @JoinTable()
-  permissions: Relation<Permission[]>;
+  permissions: Relation<Permission>[];
 }

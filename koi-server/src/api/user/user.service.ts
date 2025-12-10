@@ -15,8 +15,12 @@ export class UserService {
     return this.usersRepository.save(createUserDto);
   }
 
-  findAll() {
-    return `This action returns all user`;
+  findAll(page = 1, pageSize = 16) {
+    return this.usersRepository
+      .createQueryBuilder()
+      .skip((page - 1) * pageSize)
+      .take(pageSize)
+      .getManyAndCount();
   }
 
   findOne(id: number) {

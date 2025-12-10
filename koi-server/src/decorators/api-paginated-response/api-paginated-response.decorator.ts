@@ -20,7 +20,7 @@ export const ApiPaginatedResponse = <TModel extends Type<any>>(
     }),
     ApiQuery({
       name: 'pageSize',
-      default: 15,
+      default: 16,
       minimum: 1,
       required: false,
       description: '每页数量',

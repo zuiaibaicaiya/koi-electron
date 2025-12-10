@@ -26,7 +26,7 @@ export class User {
   @ApiProperty({
     description: '密码',
   })
-  @Column()
+  @Column({ select: false })
   password: string;
 
   @ApiProperty({
@@ -37,6 +37,7 @@ export class User {
 
   @ApiProperty({
     description: '用户所属的角色',
+    type: () => Role,
   })
   @OneToOne(() => Role, { createForeignKeyConstraints: false })
   @JoinColumn()
