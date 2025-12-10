@@ -8,14 +8,21 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from '@/config/configuration';
 import { join } from 'node:path';
-import { RoleModule } from './api/role/role.module';
 import { PermissionModule } from './api/permission/permission.module';
+import { jwtConstants } from '@/constants';
+import { JwtModule } from '@nestjs/jwt';
+import { RoleModule } from '@/api/role/role.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration],
+    }),
+    JwtModule.register({
+      global: true,
+      secret: jwtConstants.secret,
+      signOptions: { expiresIn: '60d' },
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],

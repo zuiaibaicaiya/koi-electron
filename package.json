@@ -48,6 +48,21 @@
   },
   "build": {
     "icon": "logo.png",
+    "artifactName": "${productName}-${version}-${arch}.${ext}",
+    "linux": {
+      "target": [
+        "deb"
+      ],
+      "category": "Office",
+      "desktop": {
+        "entry": {
+          "Name": "koi-electron",
+          "Comment": "koi-electron",
+          "Type": "Application",
+          "StartupWMClass": "koi-electron"
+        }
+      }
+    },
     "directories": {
       "output": "build-electron"
     },

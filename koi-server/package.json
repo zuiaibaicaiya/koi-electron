@@ -21,7 +21,9 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@nestjs/mapped-types": "*"
+    "@nestjs/jwt": "^11.0.2",
+    "@nestjs/mapped-types": "*",
+    "dayjs": "^1.11.19"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",

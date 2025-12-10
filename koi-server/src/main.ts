@@ -21,6 +21,7 @@ async function bootstrap() {
     .setTitle('koi-electron')
     .setContact('最爱白菜呀', '', '1355081829@qq.com')
     .setDescription('koi-electron API 文档')
+    .addBearerAuth()
     .setVersion('1.0')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);

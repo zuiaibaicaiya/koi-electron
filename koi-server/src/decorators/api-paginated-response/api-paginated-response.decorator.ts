@@ -1,0 +1,68 @@
+import { applyDecorators, Type } from '@nestjs/common';
+import {
+  ApiExtraModels,
+  getSchemaPath,
+  ApiOkResponse,
+  ApiQuery,
+} from '@nestjs/swagger';
+
+export const ApiPaginatedResponse = <TModel extends Type<any>>(
+  model: TModel,
+) => {
+  return applyDecorators(
+    ApiExtraModels(model),
+    ApiQuery({
+      name: 'page',
+      default: 1,
+      minimum: 1,
+      required: false,
+      description: '页码',
+    }),
+    ApiQuery({
+      name: 'pageSize',
+      default: 15,
+      minimum: 1,
+      required: false,
+      description: '每页数量',
+    }),
+    ApiOkResponse({
+      schema: {
+        properties: {
+          status: {
+            type: 'number',
+            description: '状态码',
+          },
+          message: {
+            type: 'string',
+            description: '提示消息',
+          },
+          data: {
+            type: 'object',
+            allOf: [
+              {
+                properties: {
+                  total: {
+                    type: 'number',
+                    description: '总数',
+                  },
+                  pageSize: {
+                    type: 'number',
+                    description: '每页数量',
+                  },
+                  page: {
+                    type: 'number',
+                    description: '页码',
+                  },
+                  items: {
+                    type: 'array',
+                    items: { $ref: getSchemaPath(model) },
+                  },
+                },
+              },
+            ],
+          },
+        },
+      },
+    }),
+  );
+};
