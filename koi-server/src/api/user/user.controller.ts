@@ -11,15 +11,32 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { error, success } from '@/utils/response';
+import { RoleService } from '@/api/role/role.service';
 
 @ApiTags('user')
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly roleService: RoleService,
+  ) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  async create(@Body() createUserDto: CreateUserDto) {
+    if (createUserDto.roleId) {
+      const role = await this.roleService.findOne(createUserDto.roleId);
+      if (role) {
+        createUserDto.role = role;
+      } else {
+        return error('角色不存在');
+      }
+    }
+    const user = await this.userService.create(createUserDto);
+    if (user.id > 0) {
+      return success();
+    }
+    return error();
   }
 
   @Get()

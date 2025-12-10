@@ -1,4 +1,4 @@
-const dayjs = require('dayjs');
+import dayjs from 'dayjs';
 
 function convertDates(obj: any): any {
   if (obj === null || typeof obj !== 'object') {

@@ -9,11 +9,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 export class RoleService {
   constructor(
     @InjectRepository(Role)
-    private usersRepository: Repository<Role>,
+    private roleRepository: Repository<Role>,
   ) {}
 
   create(createRoleDto: CreateRoleDto) {
-    return this.usersRepository.insert(createRoleDto);
+    return this.roleRepository.insert(createRoleDto);
   }
 
   findAll() {
@@ -21,7 +21,7 @@ export class RoleService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} role`;
+    return this.roleRepository.findOneBy({ id });
   }
 
   update(id: number, updateRoleDto: UpdateRoleDto) {
