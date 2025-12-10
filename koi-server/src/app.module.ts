@@ -12,6 +12,8 @@ import { PermissionModule } from './api/permission/permission.module';
 import { jwtConstants } from '@/constants';
 import { JwtModule } from '@nestjs/jwt';
 import { RoleModule } from '@/api/role/role.module';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from '@/guards/auth/auth.guard';
 
 @Module({
   imports: [
@@ -45,6 +47,12 @@ import { RoleModule } from '@/api/role/role.module';
     PermissionModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
 })
 export class AppModule {}

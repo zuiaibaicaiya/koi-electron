@@ -39,4 +39,11 @@ export class UserService {
   remove(id: number) {
     return this.usersRepository.softDelete(id);
   }
+  findOneByUsername(username: string) {
+    return this.usersRepository
+      .createQueryBuilder('users')
+      .where('username = :username', { username })
+      .addSelect('users.password')
+      .getOne();
+  }
 }

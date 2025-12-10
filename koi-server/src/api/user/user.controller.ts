@@ -11,20 +11,31 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
 import { error, paginate, success } from '@/utils/response';
 import { RoleService } from '@/api/role/role.service';
 import { ApiSuccessResponse } from '@/decorators/api-success-response/api-success-response.decorator';
 import * as bcrypt from 'bcryptjs';
 import { ApiPaginatedResponse } from '@/decorators/api-paginated-response/api-paginated-response.decorator';
 import { User } from '@/api/user/entities/user.entity';
+import { JwtService } from '@nestjs/jwt';
+import { LoginUserDto } from '@/api/user/dto/login-user.dto';
+import { Public } from '@/decorators/isPublic';
+import { LoginResponseDto } from '@/api/user/dto/login-response.dto';
 
+@ApiBearerAuth()
 @ApiTags('user')
 @Controller('user')
 export class UserController {
   constructor(
     private readonly userService: UserService,
     private readonly roleService: RoleService,
+    private jwtService: JwtService,
   ) {}
 
   @ApiOperation({ summary: '新增用户', operationId: 'addUser' })
@@ -130,5 +141,30 @@ export class UserController {
       return success();
     }
     return error();
+  }
+
+  @ApiOperation({ summary: '用户登录', operationId: 'signIn' })
+  @ApiSuccessResponse(LoginResponseDto)
+  @Public()
+  @Post('/signIn')
+  async signIn(@Body() loginUserDto: LoginUserDto) {
+    const user = await this.userService.findOneByUsername(
+      loginUserDto.username,
+    );
+    if (!user) {
+      return error();
+    }
+    const isMatch = await bcrypt.compare(loginUserDto.password, user.password);
+    if (!isMatch) {
+      return error('认证失败');
+    }
+    const payload = {
+      sub: user.id,
+      username: user.username,
+      roleId: user.roleId,
+    };
+    return success({
+      token: await this.jwtService.signAsync(payload),
+    });
   }
 }
