@@ -35,7 +35,7 @@ async function bootstrap() {
 async function init() {
   const app = await NestFactory.createApplicationContext(AppModule);
   const initController = app.select(InitModule).get(InitController);
-  initController.create({});
+  await initController.init();
   await app.close();
 }
 if (cluster.isPrimary) {

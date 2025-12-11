@@ -11,34 +11,38 @@ import { InitService } from './init.service';
 import { CreateInitDto } from './dto/create-init.dto';
 import { UpdateInitDto } from './dto/update-init.dto';
 import { ApiTags } from '@nestjs/swagger';
+import * as bcrypt from 'bcryptjs';
+import { UserService } from '@/api/user/user.service';
+import { CreateUserDto } from '@/api/user/dto/create-user.dto';
+import { RoleService } from '@/api/role/role.service';
 
 @ApiTags('init')
 @Controller('init')
 export class InitController {
-  constructor(private readonly initService: InitService) {}
-
-  @Post()
-  create(@Body() createInitDto: CreateInitDto) {
-    return this.initService.create(createInitDto);
+  constructor(
+    private readonly userService: UserService,
+    private readonly roleService: RoleService,
+  ) {}
+  async init() {
+    const role = await this.roleService.findOne(1);
+    if (role) {
+      return Promise.resolve();
+    }
+    await this.__initRole();
+    await this.__initUser();
   }
-
-  @Get()
-  findAll() {
-    return this.initService.findAll();
+  async __initRole() {
+    await this.roleService.create({
+      name: 'admin',
+    });
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.initService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateInitDto: UpdateInitDto) {
-    return this.initService.update(+id, updateInitDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.initService.remove(+id);
+  async __initUser() {
+    const saltOrRounds = 10;
+    const user = {
+      username: 'admin',
+      password: await bcrypt.hash('123456', saltOrRounds),
+      roleId: 1,
+    } as CreateUserDto;
+    return this.userService.create(user);
   }
 }

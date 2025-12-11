@@ -13,6 +13,7 @@
   "dependencies": {
     "@vueuse/components": "^14.1.0",
     "@vueuse/core": "^14.1.0",
+    "axios": "^1.13.2",
     "element-plus": "^2.12.0",
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.7.1",
