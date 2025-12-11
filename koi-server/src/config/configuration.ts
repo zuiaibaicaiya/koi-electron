@@ -19,8 +19,10 @@ export default () => {
         'AppData',
         'Roaming',
         'Electron',
-        'koi-koi-electron.json',
+        'koi-electron.json',
       );
+    } else if (os.platform() === 'linux') {
+      configFile = join(homedir(), '.config', 'Electron', 'koi-electron.json');
     } else {
       configFile = join(
         homedir(),
