@@ -2,8 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import cluster from 'node:cluster';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { InitModule } from './api/init/init.module';
-import { InitController } from './api/init/init.controller';
+import { InitModule } from '@/init/init.module';
+import { InitController } from '@/init/init.controller';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
@@ -33,7 +33,7 @@ async function bootstrap() {
   });
 }
 async function init() {
-  const app = await NestFactory.createApplicationContext(AppModule);
+  const app = await NestFactory.createApplicationContext(InitModule);
   const initController = app.select(InitModule).get(InitController);
   await initController.init();
   await app.close();
