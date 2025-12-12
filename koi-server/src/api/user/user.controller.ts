@@ -161,7 +161,7 @@ export class UserController {
     const payload = {
       sub: user.id,
       username: user.username,
-      roleId: user.roleId,
+      role: user.role,
     };
     return success({
       token: await this.jwtService.signAsync(payload),

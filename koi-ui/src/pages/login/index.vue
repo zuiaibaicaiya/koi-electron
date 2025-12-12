@@ -24,6 +24,7 @@
       </el-form-item>
       <el-form-item>
         <el-button
+          v-loading="loading"
           type="primary"
           @click="submitForm(ruleFormRef)"
         >
@@ -41,6 +42,7 @@ import { ElMessage, type FormInstance, type FormRules } from 'element-plus';
 import { login } from '@/api/user';
 import { useRouter } from 'vue-router';
 const router = useRouter();
+const loading = ref(false);
 const ruleFormRef = ref<FormInstance>();
 const ruleForm = reactive({
   username: 'admin',

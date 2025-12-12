@@ -43,7 +43,9 @@ export class User {
   @JoinColumn()
   role: Relation<Role>;
 
-  @Column()
+  @Column({
+    nullable: true,
+  })
   roleId: number;
 
   @CreateDateColumn()

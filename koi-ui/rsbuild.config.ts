@@ -27,13 +27,7 @@ export default defineConfig({
     rspack: (config) => {
       config.plugins?.push(
         Components({
-          resolvers: [
-            ElementPlusResolver({
-              importStyle: false, // or 'sass' if you're using Sass
-            }),
-          ],
-          dts: true,
-          directives: true, // enable automatic directive importing
+          resolvers: [ElementPlusResolver()],
         }),
       );
       return config;
