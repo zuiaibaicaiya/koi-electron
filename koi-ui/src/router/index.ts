@@ -1,4 +1,8 @@
-import { createRouter, createWebHashHistory } from 'vue-router';
+import {
+  createRouter,
+  createWebHashHistory,
+  type RouteRecordRaw,
+} from 'vue-router';
 import { useConfigStore } from '@/store/config.ts';
 import { useTabView } from '@/store/tabView.ts';
 import { useUserStore } from '@/store/user.ts';
@@ -9,13 +13,14 @@ const Home = () => import('@/pages/home/index.vue');
 const User = () => import('@/pages/user/index.vue');
 const Setting = () => import('@/pages/setting/index.vue');
 const Login = () => import('@/pages/login/index.vue');
-const routes = [
+
+const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: KoiLayout,
     children: [
       {
-        path: '',
+        path: '/',
         component: Home,
         meta: {
           title: 'home',
@@ -66,7 +71,6 @@ router.beforeEach(async (to, _from, next) => {
             return next({ path: '/login', replace: true });
           }
         }
-
         tabView.addTag(to);
         next();
       }

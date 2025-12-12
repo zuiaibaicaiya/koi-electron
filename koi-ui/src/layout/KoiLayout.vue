@@ -22,6 +22,7 @@ watchPostEffect(() => {
 });
 const handleClick = (tab: TabsPaneContext, event: Event) => {
   router.push(tab.props!.name);
+  console.log(event);
 };
 
 const handleSelect = (key: string, keyPath: string[], item) => {
@@ -76,17 +77,13 @@ function sideHandle() {
               <template #header>
                 <el-row justify="space-between">
                   <el-col :span="12">
-                    <el-button :icon="Search" type="text" />
+                    <el-button :icon="Search" link />
                   </el-col>
                   <el-col :span="12" style="flex: none">
-                    <el-button :icon="Search" type="text" />
-                    <el-button :icon="Folder" type="text" />
-                    <el-button :icon="Setting" type="text" />
-                    <el-button
-                      :icon="DArrowLeft"
-                      type="text"
-                      @click="sideHandle"
-                    />
+                    <el-button :icon="Search" link />
+                    <el-button :icon="Folder" link />
+                    <el-button :icon="Setting" link />
+                    <el-button :icon="DArrowLeft" link @click="sideHandle" />
                   </el-col>
                 </el-row>
               </template>
@@ -98,16 +95,16 @@ function sideHandle() {
             </el-card>
           </div>
           <div v-else style="text-align: center">
-            <el-button :icon="DArrowRight" type="text" @click="sideHandle" />
+            <el-button :icon="DArrowRight" link @click="sideHandle" />
           </div>
         </el-aside>
         <el-main>
           <el-tabs v-model="activeName" editable @tab-click="handleClick">
             <el-tab-pane
               v-for="item in tabView.tabViewList"
-              :name="item.fullPath"
-              :key="item.fullPath"
-              :label="item.meta.title"
+              :name="item.path"
+              :key="item.path"
+              :label="item!.meta!.title"
             />
           </el-tabs>
           <router-view v-slot="{ Component }">
