@@ -1,6 +1,8 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import { useConfigStore } from '@/store/config.ts';
 import { useTabView } from '@/store/tabView.ts';
+import { useUserStore } from '@/store/user.ts';
+import { ElMessage } from 'element-plus';
 
 const KoiLayout = () => import('@/layout/KoiLayout.vue');
 const Home = () => import('@/pages/home/index.vue');
@@ -42,9 +44,10 @@ const router = createRouter({
   routes,
 });
 const whiteList = ['/setting', '/login'];
-router.beforeEach((to, _from, next) => {
+router.beforeEach(async (to, _from, next) => {
   const configStore = useConfigStore();
   const tabView = useTabView();
+  const userStore = useUserStore();
   if (whiteList.includes(to.path)) {
     next();
   } else {
@@ -55,6 +58,15 @@ router.beforeEach((to, _from, next) => {
       if (!token) {
         next({ path: '/login', replace: true });
       } else {
+        if (!userStore.user['username']) {
+          const { status, message } = await userStore.getCurrentUser();
+          if (status !== 200) {
+            ElMessage.error(message);
+            localStorage.clear();
+            return next({ path: '/login', replace: true });
+          }
+        }
+
         tabView.addTag(to);
         next();
       }

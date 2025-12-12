@@ -5,6 +5,10 @@ declare global {
       message: string;
       data: T;
     }
+    interface User {
+      username: string;
+      id: number;
+    }
   }
 }
 export {};

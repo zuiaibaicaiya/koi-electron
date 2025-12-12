@@ -1,5 +1,4 @@
 import axios from 'axios';
-import router from '@/router';
 const request = axios.create({
   baseURL: 'http://127.0.0.1:5166/api',
 });
@@ -10,6 +9,10 @@ request.interceptors.request.use((config) => {
   config.signal = controller.signal;
   if (pendingRequests.has(config.url)) {
     pendingRequests.get(config.url).abort('相同URL的新请求已发送，取消旧请求');
+  }
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers['authorization'] = `Bearer ${token}`;
   }
   pendingRequests.set(config.url, controller);
   return config;
@@ -25,11 +28,11 @@ request.interceptors.response.use(
     return Promise.reject(error);
   },
 );
-router.beforeEach((_to, _form, next) => {
-  pendingRequests.forEach((controller) =>
-    controller.abort('路由切换，取消请求'),
-  );
-  pendingRequests.clear();
-  next();
-});
+// router.beforeEach((_to, _form, next) => {
+//   pendingRequests.forEach((controller) =>
+//     controller.abort('路由切换，取消请求'),
+//   );
+//   pendingRequests.clear();
+//   next();
+// });
 export default request;

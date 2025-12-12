@@ -9,18 +9,10 @@
       label-width="auto"
     >
       <el-form-item label="用户名" prop="username">
-        <el-input
-          v-model="ruleForm.username"
-          type="password"
-          autocomplete="off"
-        />
+        <el-input v-model="ruleForm.username" type="text" autocomplete="off" />
       </el-form-item>
       <el-form-item label="密码" prop="password">
-        <el-input
-          v-model="ruleForm.password"
-          type="password"
-          autocomplete="off"
-        />
+        <el-input v-model="ruleForm.password" type="password" />
       </el-form-item>
       <el-form-item>
         <el-button

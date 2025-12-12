@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
   Query,
+  Req,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -27,7 +28,7 @@ import { JwtService } from '@nestjs/jwt';
 import { LoginUserDto } from '@/api/user/dto/login-user.dto';
 import { Public } from '@/decorators/isPublic';
 import { LoginResponseDto } from '@/api/user/dto/login-response.dto';
-
+import type { Request } from 'express';
 @ApiBearerAuth()
 @ApiTags('user')
 @Controller('user')
@@ -159,12 +160,27 @@ export class UserController {
       return error('认证失败');
     }
     const payload = {
-      sub: user.id,
+      sub: 'auth',
+      id: user.id,
       username: user.username,
       role: user.role,
     };
     return success({
       token: await this.jwtService.signAsync(payload),
     });
+  }
+
+  @ApiOperation({
+    summary: '获得当前登录的用户信息',
+    operationId: 'getCurrentUser',
+  })
+  @Get('/current/info')
+  async getCurrentUser(@Req() req: Request) {
+    const user = req.user;
+    const authUser = await this.userService.findOne(user!.id);
+    if (!authUser) {
+      return error('认证失败');
+    }
+    return success(user);
   }
 }

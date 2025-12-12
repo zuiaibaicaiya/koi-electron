@@ -35,7 +35,6 @@ export class AuthGuard implements CanActivate {
     if (!token) {
       throw new UnauthorizedException(error('认证失败！'));
     }
-
     try {
       Object.assign(request, {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -54,7 +53,6 @@ export class AuthGuard implements CanActivate {
     if (request.query['authorization']) {
       const [type, token] =
         (request.query.authorization as string).split(' ') ?? [];
-      // 只有当类型是Bearer时才返回token
       return type === 'Bearer' ? token : undefined;
     }
 

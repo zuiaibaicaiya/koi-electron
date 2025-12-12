@@ -7,3 +7,8 @@ export function login(data: Record<string, string>) {
     data,
   });
 }
+export function getCurrentUserInfo() {
+  return request<never, API.Response<API.User>>({
+    url: '/user/current/info',
+  });
+}
