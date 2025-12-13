@@ -1,7 +1,20 @@
 import axios from 'axios';
+import axiosRetry from 'axios-retry';
+import router from '@/router';
+
 const request = axios.create({
   baseURL: 'http://127.0.0.1:5166/api',
 });
+axiosRetry(request, {
+  retries: 3,
+  retryDelay: (retryCount, error) => {
+    if (error.code === 'ERR_NETWORK') {
+      return retryCount * 2000;
+    }
+    return 200;
+  },
+});
+
 const pendingRequests = new Map();
 
 request.interceptors.request.use((config) => {
@@ -20,11 +33,15 @@ request.interceptors.request.use((config) => {
 // 响应拦截器
 request.interceptors.response.use(
   (response) => {
-    pendingRequests.delete(response.config.url);
+    pendingRequests.delete(response?.config?.url);
     return response.data;
   },
   (error) => {
-    pendingRequests.delete(error.config.url);
+    if (error.status === 401) {
+      localStorage.clear();
+      router.replace('/login');
+    }
+    pendingRequests.delete(error?.config?.url);
     return Promise.reject(error);
   },
 );

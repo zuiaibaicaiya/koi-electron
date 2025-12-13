@@ -55,7 +55,7 @@ const createWindow = async () => {
       await mainWindow
         .loadURL(process.env['ELECTRON_RENDERER_URL'])
         .then(() => {
-          // mainWindow.webContents.openDevTools({ mode: 'bottom' });
+          mainWindow.webContents.openDevTools({ mode: 'bottom' });
         });
     } else {
       await mainWindow

@@ -63,12 +63,16 @@ router.beforeEach(async (to, _from, next) => {
       if (!token) {
         next({ path: '/login', replace: true });
       } else {
-        if (!userStore.user['username']) {
-          const { status, message } = await userStore.getCurrentUser();
-          if (status !== 200) {
-            ElMessage.error(message);
-            localStorage.clear();
-            return next({ path: '/login', replace: true });
+        if (!userStore.user) {
+          try {
+            const { status, message } = await userStore.getCurrentUser();
+            if (status && status !== 200) {
+              ElMessage.error(message);
+              localStorage.clear();
+              return next({ path: '/login', replace: true });
+            }
+          } catch (e) {
+            console.log(e);
           }
         }
         tabView.addTag(to);
