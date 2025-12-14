@@ -6,10 +6,10 @@ const request = axios.create({
   baseURL: 'http://127.0.0.1:5166/api',
 });
 axiosRetry(request, {
-  retries: 3,
+  retries: 5,
   retryDelay: (retryCount, error) => {
     if (error.code === 'ERR_NETWORK') {
-      return retryCount * 2000;
+      return retryCount * 200;
     }
     return 200;
   },

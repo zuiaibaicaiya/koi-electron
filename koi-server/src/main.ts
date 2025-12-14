@@ -39,12 +39,12 @@ async function init() {
   await app.close();
 }
 if (cluster.isPrimary) {
-  void init();
   cluster.fork();
   cluster.on('exit', (worker) => {
     cluster.fork();
     console.log(`worker ${worker.process.pid} died`);
   });
+  void init();
 } else {
   void bootstrap();
 }

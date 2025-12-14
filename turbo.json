@@ -7,10 +7,6 @@
     "stub": {
       "dependsOn": ["^stub"]
     },
-    "app-ui#build": {
-      "cache": false,
-      "dependsOn": ["koi-server#build"]
-    },
     "dev": {
       "persistent": true,
       "cache": false

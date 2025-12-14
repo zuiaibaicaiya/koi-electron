@@ -99,19 +99,6 @@ if (!gotTheLock) {
     }
   });
   app.whenReady().then(async () => {
-    ipcMain.handle('dialog:openDirectory', handleDirectoryOpen);
-    createWindow();
-    globalShortcut.register('CommandOrControl+Shift+E', () => {
-      store.openInEditor();
-    });
-    globalShortcut.register('CommandOrControl+Shift+T', () => {
-      if (mainWindow.webContents.isDevToolsOpened()) {
-        mainWindow.webContents.closeDevTools();
-      } else {
-        mainWindow.webContents.openDevTools({ mode: 'bottom' });
-      }
-    });
-
     if (!__IS_DEV__) {
       const configPath = store.path;
       const { signal } = controller;
@@ -123,12 +110,27 @@ if (!gotTheLock) {
             NODE_ENV: 'production',
             configPath,
           },
+          silent: true,
         },
       );
       koiServer.once('error', (err) => {
         console.log(err);
       });
     }
+
+    await createWindow();
+    ipcMain.handle('dialog:openDirectory', handleDirectoryOpen);
+
+    globalShortcut.register('CommandOrControl+Shift+E', () => {
+      store.openInEditor();
+    });
+    globalShortcut.register('CommandOrControl+Shift+T', () => {
+      if (mainWindow.webContents.isDevToolsOpened()) {
+        mainWindow.webContents.closeDevTools();
+      } else {
+        mainWindow.webContents.openDevTools({ mode: 'bottom' });
+      }
+    });
   });
   app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
