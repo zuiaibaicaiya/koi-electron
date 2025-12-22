@@ -39,7 +39,7 @@ export class InitController {
   async __initUser() {
     const saltOrRounds = 10;
     const user = {
-      username: 'admin',
+      username: 'koi-electron',
       password: await bcrypt.hash('123456', saltOrRounds),
       roleId: 1,
     } as CreateUserDto;

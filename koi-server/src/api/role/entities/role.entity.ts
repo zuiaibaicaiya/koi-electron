@@ -1,4 +1,9 @@
-import type { Relation } from 'typeorm';
+import {
+  CreateDateColumn,
+  DeleteDateColumn,
+  Relation,
+  UpdateDateColumn,
+} from 'typeorm';
 import {
   Column,
   Entity,
@@ -28,4 +33,11 @@ export class Role {
   @ManyToMany(() => Permission, { createForeignKeyConstraints: false })
   @JoinTable()
   permissions: Relation<Permission>[];
+
+  @CreateDateColumn()
+  createdAt: Date;
+  @UpdateDateColumn()
+  updatedAt: Date;
+  @DeleteDateColumn()
+  deletedAt: Date;
 }

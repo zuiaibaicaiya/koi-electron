@@ -48,10 +48,12 @@ export const ApiPaginatedResponse = <TModel extends Type<any>>(
                   pageSize: {
                     type: 'number',
                     description: '每页数量',
+                    example: 16,
                   },
                   page: {
                     type: 'number',
                     description: '页码',
+                    example: 1,
                   },
                   items: {
                     type: 'array',

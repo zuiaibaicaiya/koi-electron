@@ -16,8 +16,12 @@ export class RoleService {
     return this.roleRepository.insert(createRoleDto);
   }
 
-  findAll() {
-    return `This action returns all role`;
+  findAll(page = 1, pageSize = 16) {
+    return this.roleRepository
+      .createQueryBuilder()
+      .skip((page - 1) * pageSize)
+      .take(pageSize)
+      .getManyAndCount();
   }
 
   findOne(id: number) {
@@ -25,10 +29,10 @@ export class RoleService {
   }
 
   update(id: number, updateRoleDto: UpdateRoleDto) {
-    return `This action updates a #${id} role`;
+    return this.roleRepository.update(id, updateRoleDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} role`;
+    return this.roleRepository.softDelete(id);
   }
 }
