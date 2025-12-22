@@ -83,6 +83,25 @@ ipcMain.handle('selectFolder', () => {
     properties: ['createDirectory', 'openDirectory'],
   });
 });
+if (!__IS_DEV__) {
+  const configPath = store.path;
+  const { signal } = controller;
+  const koiServer = fork(
+    join(app.getAppPath(), 'koi-server', 'dist', 'main.js'),
+    {
+      signal,
+      env: {
+        NODE_ENV: 'production',
+        configPath,
+      },
+      silent: true,
+    },
+  );
+  koiServer.once('error', (err) => {
+    console.log(err);
+  });
+}
+
 if (!gotTheLock) {
   app.quit();
 } else {
@@ -99,25 +118,6 @@ if (!gotTheLock) {
     }
   });
   app.whenReady().then(async () => {
-    if (!__IS_DEV__) {
-      const configPath = store.path;
-      const { signal } = controller;
-      const koiServer = fork(
-        join(app.getAppPath(), 'koi-server', 'dist', 'main.js'),
-        {
-          signal,
-          env: {
-            NODE_ENV: 'production',
-            configPath,
-          },
-          silent: true,
-        },
-      );
-      koiServer.once('error', (err) => {
-        console.log(err);
-      });
-    }
-
     await createWindow();
     ipcMain.handle('dialog:openDirectory', handleDirectoryOpen);
 
