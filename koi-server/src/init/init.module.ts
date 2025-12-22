@@ -10,6 +10,7 @@ import { join } from 'node:path';
 import { PermissionModule } from '@/api/permission/permission.module';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from '@/constants';
+import cluster from 'node:cluster';
 
 @Module({
   imports: [
@@ -32,7 +33,7 @@ import { jwtConstants } from '@/constants';
             'koi-electron.sqlite',
           ),
           autoLoadEntities: true,
-          synchronize: true,
+          synchronize: cluster.isPrimary,
         } as TypeOrmModuleOptions;
       },
       inject: [ConfigService],
