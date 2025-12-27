@@ -1,15 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-} from '@nestjs/common';
-import { InitService } from './init.service';
-import { CreateInitDto } from './dto/create-init.dto';
-import { UpdateInitDto } from './dto/update-init.dto';
+import { Controller } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import * as bcrypt from 'bcryptjs';
 import { UserService } from '@/api/user/user.service';

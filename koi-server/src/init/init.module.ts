@@ -26,7 +26,7 @@ import cluster from 'node:cluster';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => {
-        return {
+        return Promise.resolve<TypeOrmModuleOptions>({
           type: 'sqlite',
           database: join(
             configService.get('storage') as string,
@@ -34,7 +34,7 @@ import cluster from 'node:cluster';
           ),
           autoLoadEntities: true,
           synchronize: cluster.isPrimary,
-        } as TypeOrmModuleOptions;
+        });
       },
       inject: [ConfigService],
     }),
