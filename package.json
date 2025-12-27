@@ -29,12 +29,12 @@
     "turbo": "^2.7.2"
   },
   "dependencies": {
-    "@nestjs/common": "^11.1.9",
+    "@nestjs/common": "^11.1.10",
     "@nestjs/config": "^4.0.2",
-    "@nestjs/core": "^11.1.9",
+    "@nestjs/core": "^11.1.10",
     "@nestjs/jwt": "^11.0.2",
     "@nestjs/mapped-types": "*",
-    "@nestjs/platform-express": "^11.1.9",
+    "@nestjs/platform-express": "^11.1.10",
     "@nestjs/swagger": "^11.2.3",
     "@nestjs/typeorm": "^11.0.0",
     "bcryptjs": "^3.0.3",
@@ -46,8 +46,7 @@
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "sqlite3": "^5.1.7",
-    "typeorm": "^0.3.28",
-    "v8-compile-cache": "^2.4.0"
+    "typeorm": "^0.3.28"
   },
   "build": {
     "icon": "logo.png",

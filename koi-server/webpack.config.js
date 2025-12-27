@@ -25,7 +25,7 @@ class ByteNodeWebpackPlugin {
           fs.unlinkSync(outputFile);
           fs.writeFileSync(
             outputFile,
-            "require('v8-compile-cache');require('bytenode');module.exports = require('./main.jsc')",
+            "require('bytenode');module.exports = require('./main.jsc')",
           );
         } catch (error) {
           console.error('bytenode compilation failed:', error);
