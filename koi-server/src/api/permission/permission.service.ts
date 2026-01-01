@@ -1,26 +1,33 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Permission } from '@/api/permission/entities/permission.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class PermissionService {
+  constructor(
+    @InjectRepository(Permission)
+    private readonly permissionRepository: Repository<Permission>,
+  ) {}
   create(createPermissionDto: CreatePermissionDto) {
-    return 'This action adds a new permission';
+    return this.permissionRepository.save(createPermissionDto);
   }
 
   findAll() {
-    return `This action returns all permission`;
+    return this.permissionRepository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} permission`;
+    return this.permissionRepository.findOneBy({ id });
   }
 
   update(id: number, updatePermissionDto: UpdatePermissionDto) {
-    return `This action updates a #${id} permission`;
+    return this.permissionRepository.update(id, updatePermissionDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} permission`;
+    return this.permissionRepository.delete(id);
   }
 }

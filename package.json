@@ -23,7 +23,7 @@
   ],
   "packageManager": "npm@10.9.2",
   "devDependencies": {
-    "electron": "^39.2.5",
+    "electron": "^39.2.7",
     "electron-builder": "^26.0.12",
     "electron-rs": "^1.1.4",
     "turbo": "^2.7.2"

@@ -22,7 +22,7 @@
     "vue-router": "^4.6.4"
   },
   "devDependencies": {
-    "@rsbuild/core": "^1.6.15",
+    "@rsbuild/core": "^1.7.1",
     "@rsbuild/plugin-node-polyfill": "^1.4.2",
     "@rsbuild/plugin-sass": "^1.4.0",
     "@rsbuild/plugin-vue": "^1.2.2",

@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Request } from 'express';
+import type { Request } from 'express';
 import { Reflector } from '@nestjs/core';
 import { error } from '@/utils/response';
 import { IS_PUBLIC_KEY } from '@/decorators/isPublic';
