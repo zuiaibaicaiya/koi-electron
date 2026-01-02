@@ -47,21 +47,45 @@ export class PermissionController {
   @ApiOperation({
     summary: '权限详情',
   })
+  @ApiSuccessResponse(Permission)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.permissionService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const permission = await this.permissionService.findOne(+id);
+    if (permission) {
+      return success(permission);
+    }
+    return error();
   }
 
+  @ApiOperation({
+    summary: '更新权限',
+  })
+  @ApiSuccessResponse()
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updatePermissionDto: UpdatePermissionDto,
   ) {
-    return this.permissionService.update(+id, updatePermissionDto);
+    const { affected } = await this.permissionService.update(
+      +id,
+      updatePermissionDto,
+    );
+    if (affected) {
+      return success();
+    }
+    return error();
   }
 
+  @ApiOperation({
+    summary: '删除权限',
+  })
+  @ApiSuccessResponse()
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.permissionService.remove(+id);
+  async remove(@Param('id') id: string) {
+    const { affected } = await this.permissionService.remove(+id);
+    if (affected) {
+      return success();
+    }
+    return error();
   }
 }
