@@ -60,16 +60,35 @@ export class DepartmentController {
     return this.departmentService.findOne(+id);
   }
 
+  @ApiOperation({
+    summary: '更新部门树形结构',
+  })
+  @ApiSuccessResponse()
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateDepartmentDto: UpdateDepartmentDto,
   ) {
-    return this.departmentService.update(+id, updateDepartmentDto);
+    const { affected } = await this.departmentService.update(
+      +id,
+      updateDepartmentDto,
+    );
+    if (affected) {
+      return success();
+    }
+    return error();
   }
 
+  @ApiOperation({
+    summary: '删除部门',
+  })
+  @Public()
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.departmentService.remove(+id);
+  async remove(@Param('id') id: string) {
+    const { affected } = await this.departmentService.remove(+id);
+    if (affected) {
+      return success();
+    }
+    return error();
   }
 }
