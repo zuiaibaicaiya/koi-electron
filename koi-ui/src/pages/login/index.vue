@@ -37,7 +37,7 @@ const router = useRouter();
 const loading = ref(false);
 const ruleFormRef = ref<FormInstance>();
 const ruleForm = reactive({
-  username: 'admin',
+  username: 'koi-electron',
   password: '123456',
 });
 
