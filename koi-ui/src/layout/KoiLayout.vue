@@ -4,6 +4,7 @@ import type { TabsPaneContext } from 'element-plus';
 import { useTabView } from '@/store/tabView.ts';
 
 const activeName = ref('system');
+const activeTab = ref('/user');
 const handleClick = (tab: TabsPaneContext, event: Event) => {
   console.log(tab, event);
 };
@@ -13,23 +14,27 @@ const tabView = useTabView();
 <template>
   <div class="koi-layout">
     <el-container>
-      <el-header style="height: 80px">
-        <el-tabs v-model="activeName" @tab-click="handleClick">
+      <el-header style="height: 100px">
+        <el-tabs
+          v-model="activeName"
+          @tab-click="handleClick"
+          type="border-card"
+        >
           <el-tab-pane label="仪表盘" name="dashboard">仪表盘</el-tab-pane>
           <el-tab-pane label="客户管理" name="customer">客户管理</el-tab-pane>
           <el-tab-pane label="系统设置" name="system">
             <el-space>
               <router-link to="/user">
-                <el-button link>用户管理</el-button>
+                <el-button type="primary" link>用户管理</el-button>
               </router-link>
               <router-link to="/role">
-                <el-button link>角色管理</el-button>
+                <el-button type="default" link>角色管理</el-button>
               </router-link>
               <router-link to="/department">
-                <el-button link>部门管理</el-button>
+                <el-button type="default" link>部门管理</el-button>
               </router-link>
               <router-link to="/permission">
-                <el-button link>权限管理</el-button>
+                <el-button type="default" link>权限管理</el-button>
               </router-link>
             </el-space>
           </el-tab-pane>
@@ -37,11 +42,12 @@ const tabView = useTabView();
       </el-header>
       <el-container>
         <el-main>
-          <el-tabs v-model="activeName" editable>
+          <el-tabs v-model="activeTab">
             <el-tab-pane
               v-for="item in tabView.tabViewList"
               :name="item.path"
               :key="item.path"
+              lazy
               :label="item!.meta!.title"
             />
           </el-tabs>

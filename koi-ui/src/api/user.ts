@@ -12,3 +12,8 @@ export function getCurrentUserInfo() {
     url: '/user/current/info',
   });
 }
+export function getUserList() {
+  return request<never, API.Pagination<API.User>>({
+    url: '/user',
+  });
+}
