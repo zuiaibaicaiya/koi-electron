@@ -23,14 +23,14 @@ const routes: RouteRecordRaw[] = [
         path: '/',
         component: Home,
         meta: {
-          title: 'home',
+          title: '首页',
         },
       },
       {
         path: '/user',
         component: User,
         meta: {
-          title: 'user',
+          title: '用户管理',
         },
       },
     ],
