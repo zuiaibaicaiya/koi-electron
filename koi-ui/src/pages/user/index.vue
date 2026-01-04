@@ -1,8 +1,32 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { getUserList } from '@/api/user.ts';
-
+import { ProTable } from '@/components/ProTable/index.ts';
 const userList = ref<Array<API.User>>([]);
+const columns = [
+  {
+    label: 'ID',
+    prop: 'id',
+  },
+  {
+    label: '用户名',
+    prop: 'username',
+  },
+  {
+    label: '角色',
+    prop: 'role',
+    slot: 'role',
+  },
+  {
+    label: '创建日期',
+    prop: 'createdAt',
+  },
+  {
+    label: '操作',
+    prop: 'action',
+    slot: 'action',
+  },
+];
 onMounted(() => {
   getUserList().then(({ data }) => {
     userList.value = data.items;
@@ -12,16 +36,17 @@ onMounted(() => {
 
 <template>
   <div>
-    <el-table :data="userList" style="width: 100%">
-      <el-table-column prop="id" label="id" width="180" />
-      <el-table-column prop="username" label="用户名" width="180" />
-      <el-table-column label="角色" width="180">
-        <template #default="{ row }">
-          {{ row?.role.name }}
-        </template>
-      </el-table-column>
-      <el-table-column prop="createdAt" label="创建日期" />
-    </el-table>
+    <pro-table :data-source="userList" :columns="columns">
+      <template #role="{ row }">
+        {{ row?.role.name }}
+      </template>
+      <template #action="{ row }">
+        <el-space>
+          <el-button type="primary">编辑</el-button>
+          <el-button type="danger">删除</el-button>
+        </el-space>
+      </template>
+    </pro-table>
   </div>
 </template>
 

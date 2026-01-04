@@ -14,7 +14,7 @@ const tabView = useTabView();
 <template>
   <div class="koi-layout">
     <el-container>
-      <el-header style="height: 100px">
+      <el-header style="height: 100px; margin-top: 0">
         <el-tabs
           v-model="activeName"
           @tab-click="handleClick"
