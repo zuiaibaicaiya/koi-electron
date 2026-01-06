@@ -10,9 +10,21 @@ interface Props {
   columns: Column[];
 }
 defineProps<Props>();
+defineSlots<{
+  'toolbar-left': () => any;
+  'toolbar-right': () => any;
+}>();
 </script>
 
 <template>
+  <div style="margin: 0 6px">
+    <div v-if="$slots['toolbar-left']" style="float: left">
+      <slot name="toolbar-left"></slot>
+    </div>
+    <div v-if="$slots['toolbar-right']" style="float: right">
+      <slot name="toolbar-right"></slot>
+    </div>
+  </div>
   <el-table :data="dataSource">
     <el-table-column
       v-for="column in columns"
