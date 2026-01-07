@@ -25,7 +25,7 @@ defineSlots<{
       <slot name="toolbar-right"></slot>
     </div>
   </div>
-  <el-table :data="dataSource">
+  <el-table :data="dataSource" row-key="id" v-bind="$attrs">
     <el-table-column
       v-for="column in columns"
       :key="column.prop"

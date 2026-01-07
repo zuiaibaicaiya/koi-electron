@@ -19,6 +19,14 @@ declare global {
       username: string;
       id: number;
     }
+    interface Role {
+      name: string;
+      id: number;
+    }
+    interface Department {
+      name: string;
+      id: number;
+    }
   }
 }
 export {};

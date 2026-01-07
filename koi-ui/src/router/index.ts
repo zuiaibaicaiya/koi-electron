@@ -11,6 +11,9 @@ import { ElMessage } from 'element-plus';
 const KoiLayout = () => import('@/layout/KoiLayout.vue');
 const Home = () => import('@/pages/home/index.vue');
 const User = () => import('@/pages/user/index.vue');
+const Role = () => import('@/pages/role/index.vue');
+const Department = () => import('@/pages/department/index.vue');
+const Permission = () => import('@/pages/permission/index.vue');
 const Setting = () => import('@/pages/setting/index.vue');
 const Login = () => import('@/pages/login/index.vue');
 
@@ -31,6 +34,27 @@ const routes: RouteRecordRaw[] = [
         component: User,
         meta: {
           title: '用户管理',
+        },
+      },
+      {
+        path: '/role',
+        component: Role,
+        meta: {
+          title: '角色管理',
+        },
+      },
+      {
+        path: '/department',
+        component: Department,
+        meta: {
+          title: '部门管理',
+        },
+      },
+      {
+        path: '/permission',
+        component: Permission,
+        meta: {
+          title: '权限管理',
         },
       },
     ],
