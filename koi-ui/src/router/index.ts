@@ -16,6 +16,7 @@ const Department = () => import('@/pages/department/index.vue');
 const Permission = () => import('@/pages/permission/index.vue');
 const Setting = () => import('@/pages/setting/index.vue');
 const Login = () => import('@/pages/login/index.vue');
+const Record = () => import('@/pages/record/index.vue');
 
 const routes: RouteRecordRaw[] = [
   {
@@ -55,6 +56,13 @@ const routes: RouteRecordRaw[] = [
         component: Permission,
         meta: {
           title: '权限管理',
+        },
+      },
+      {
+        path: '/record',
+        component: Record,
+        meta: {
+          title: '录音机',
         },
       },
     ],

@@ -4,6 +4,8 @@ import {
   ipcMain,
   dialog,
   globalShortcut,
+  desktopCapturer,
+  session,
   type BrowserWindowConstructorOptions,
 } from 'electron';
 import Store from 'electron-store';
@@ -118,6 +120,20 @@ if (!gotTheLock) {
     }
   });
   app.whenReady().then(async () => {
+    session.defaultSession.setDisplayMediaRequestHandler(
+      (_request, callback) => {
+        desktopCapturer
+          .getSources({
+            types: ['screen'],
+            thumbnailSize: { width: 0, height: 0 },
+          })
+          .then((sources) => {
+            // Grant access to the first screen found.
+            callback({ video: sources[0], audio: 'loopback' });
+          });
+      },
+      { useSystemPicker: true },
+    );
     await createWindow();
     ipcMain.handle('dialog:openDirectory', handleDirectoryOpen);
 

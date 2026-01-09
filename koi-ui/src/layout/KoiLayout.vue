@@ -6,7 +6,7 @@ import { useTabView } from '@/store/tabView.ts';
 const activeName = ref('system');
 const activeTab = ref('/user');
 const handleClick = (tab: TabsPaneContext, event: Event) => {
-  console.log(tab, event);
+  activeTab.value = tab.props.name as string;
 };
 const tabView = useTabView();
 </script>
@@ -15,11 +15,7 @@ const tabView = useTabView();
   <div class="koi-layout">
     <el-container>
       <el-header style="height: 100px; margin-top: 0">
-        <el-tabs
-          v-model="activeName"
-          @tab-click="handleClick"
-          type="border-card"
-        >
+        <el-tabs v-model="activeName" type="border-card">
           <el-tab-pane label="仪表盘" name="dashboard">仪表盘</el-tab-pane>
           <el-tab-pane label="客户管理" name="customer">客户管理</el-tab-pane>
           <el-tab-pane label="系统设置" name="system">
@@ -36,13 +32,16 @@ const tabView = useTabView();
               <router-link to="/permission">
                 <el-button type="default" link>权限管理</el-button>
               </router-link>
+              <router-link to="/record">
+                <el-button type="default" link>录音机</el-button>
+              </router-link>
             </el-space>
           </el-tab-pane>
         </el-tabs>
       </el-header>
       <el-container>
         <el-main>
-          <el-tabs v-model="activeTab">
+          <el-tabs v-model="activeTab" @tab-click="handleClick">
             <el-tab-pane
               v-for="item in tabView.tabViewList"
               :name="item.path"
