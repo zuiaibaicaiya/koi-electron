@@ -97,6 +97,8 @@ router.beforeEach(async (to, _from, next) => {
       } else {
         if (!userStore.user) {
           try {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error
             const { status, message } = await userStore.getCurrentUser();
             if (status && status !== 200) {
               ElMessage.error(message);
