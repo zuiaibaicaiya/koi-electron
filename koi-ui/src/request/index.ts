@@ -20,9 +20,6 @@ const pendingRequests = new Map();
 request.interceptors.request.use((config) => {
   const controller = new AbortController();
   config.signal = controller.signal;
-  if (pendingRequests.has(config.url)) {
-    pendingRequests.get(config.url).abort('相同URL的新请求已发送，取消旧请求');
-  }
   const token = localStorage.getItem('token');
   if (token) {
     config.headers['authorization'] = `Bearer ${token}`;
@@ -38,18 +35,15 @@ request.interceptors.response.use(
   },
   (error) => {
     if (error.status === 401) {
+      pendingRequests.forEach((controller) =>
+        controller.abort('路由切换，取消请求'),
+      );
+      pendingRequests.clear();
       localStorage.clear();
       router.replace('/login');
     }
-    pendingRequests.delete(error?.config?.url);
     return Promise.reject(error);
   },
 );
-// router.beforeEach((_to, _form, next) => {
-//   pendingRequests.forEach((controller) =>
-//     controller.abort('路由切换，取消请求'),
-//   );
-//   pendingRequests.clear();
-//   next();
-// });
+
 export default request;

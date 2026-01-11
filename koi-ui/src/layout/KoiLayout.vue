@@ -93,17 +93,17 @@ const tabView = useTabView();
             lazy
             :label="item!.meta!.title as unknown as string"
           >
-            <el-card style="min-height: calc(100vh - 160px)">
-              <router-view v-slot="{ Component, route }">
-                <transition name="fade-transform" mode="out-in">
-                  <keep-alive>
-                    <component :is="Component" :key="route.fullPath" />
-                  </keep-alive>
-                </transition>
-              </router-view>
-            </el-card>
           </el-tab-pane>
         </el-tabs>
+        <el-card style="min-height: calc(100vh - 160px)">
+          <router-view v-slot="{ Component, route }">
+            <transition name="fade-transform" mode="out-in">
+              <keep-alive>
+                <component :is="Component" :key="route.fullPath" />
+              </keep-alive>
+            </transition>
+          </router-view>
+        </el-card>
       </el-main>
     </el-container>
   </div>
