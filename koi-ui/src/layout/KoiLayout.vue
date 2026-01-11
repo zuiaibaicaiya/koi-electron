@@ -1,18 +1,34 @@
 <script lang="ts" setup>
-import { ref, watchPostEffect } from 'vue';
+import { nextTick, reactive, ref, useTemplateRef, watchPostEffect } from 'vue';
 import type { TabsPaneContext } from 'element-plus';
 import { useTabView } from '@/store/tabView.ts';
 import { useRoute, useRouter } from 'vue-router';
+import type { DropdownInstance } from 'element-plus';
 
 const router = useRouter();
 const route = useRoute();
 const activeName = ref('system');
 const activeTab = ref('/user');
+const dropdownRef = useTemplateRef<DropdownInstance>('dropdown');
+function showClick() {
+  if (!dropdownRef.value) return;
+  dropdownRef.value.handleOpen();
+}
+const tmpPosition = reactive({
+  left: '',
+  top: '',
+});
 const handleClick = (tab: TabsPaneContext) => {
-  console.log(tab.props.name);
   activeTab.value = tab.props.name as string;
   router.replace({ path: activeTab.value });
 };
+function onRightClick(e: MouseEvent) {
+  tmpPosition.left = `${e.x}px`;
+  tmpPosition.top = `${e.pageY + 5}px`;
+  nextTick(() => {
+    showClick();
+  });
+}
 const handleHeaderClick = (tab: TabsPaneContext) => {
   activeName.value = tab.props.name as string;
 };
@@ -85,7 +101,11 @@ const tabView = useTabView();
         </el-tabs>
       </el-header>
       <el-main>
-        <el-tabs v-model="activeTab" @tab-click="handleClick">
+        <el-tabs
+          v-model="activeTab"
+          @tab-click="handleClick"
+          @contextmenu.prevent="onRightClick"
+        >
           <el-tab-pane
             v-for="item in tabView.tabViewList"
             :name="item.fullPath"
@@ -95,6 +115,22 @@ const tabView = useTabView();
           >
           </el-tab-pane>
         </el-tabs>
+        <el-dropdown
+          ref="dropdown"
+          trigger="contextmenu"
+          :style="tmpPosition"
+          style="position: absolute"
+        >
+          <span></span>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item>关闭当前</el-dropdown-item>
+              <el-dropdown-item>关闭左侧</el-dropdown-item>
+              <el-dropdown-item>关闭右侧</el-dropdown-item>
+              <el-dropdown-item>关闭全部</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
         <el-card style="min-height: calc(100vh - 160px)">
           <router-view v-slot="{ Component, route }">
             <transition name="fade-transform" mode="out-in">
@@ -136,5 +172,19 @@ const tabView = useTabView();
   :deep(.el-menu--horizontal) {
     --el-menu-horizontal-height: 40px;
   }
+}
+.fade-transform-leave-active,
+.fade-transform-enter-active {
+  transition: all 0.2s;
+}
+
+.fade-transform-enter-from {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+.fade-transform-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
 }
 </style>
