@@ -34,6 +34,7 @@ request.interceptors.response.use(
     return response.data;
   },
   (error) => {
+    pendingRequests.delete(error?.config?.url);
     if (error.status === 401) {
       pendingRequests.forEach((controller) =>
         controller.abort('路由切换，取消请求'),
