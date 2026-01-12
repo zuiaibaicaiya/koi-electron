@@ -23,8 +23,11 @@ const handleClick = (tab: TabsPaneContext) => {
   router.replace({ path: activeTab.value });
 };
 function onRightClick(e: MouseEvent) {
-  tmpPosition.left = `${e.x}px`;
-  tmpPosition.top = `${e.pageY + 5}px`;
+  const { x, y, width, height } = (
+    e.target as HTMLElement
+  ).getBoundingClientRect();
+  tmpPosition.left = `${x + width / 2}px`;
+  tmpPosition.top = `${y + height}px`;
   nextTick(() => {
     showClick();
   });
