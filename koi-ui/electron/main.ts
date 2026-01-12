@@ -43,6 +43,14 @@ async function handleDirectoryOpen() {
 let mainWindow: BrowserWindow;
 const createWindow = async () => {
   const config: BrowserWindowConstructorOptions = {
+    titleBarStyle: 'hidden',
+    titleBarOverlay: {
+      color: '#2f3241',
+      symbolColor: '#74b1be',
+      height: 40,
+    },
+    // expose window controls in Windows/Linux
+    ...(process.platform !== 'darwin' ? { titleBarOverlay: true } : {}),
     webPreferences: {
       nodeIntegration: true,
       webSecurity: false,

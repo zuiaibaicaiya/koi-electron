@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 import { nextTick, reactive, ref, useTemplateRef, watchPostEffect } from 'vue';
-import type { TabsPaneContext } from 'element-plus';
+import type { DropdownInstance, TabsPaneContext } from 'element-plus';
 import { useTabView } from '@/store/tabView.ts';
 import { useRoute, useRouter } from 'vue-router';
-import type { DropdownInstance } from 'element-plus';
 
 const router = useRouter();
 const route = useRoute();
@@ -45,7 +44,7 @@ const tabView = useTabView();
 <template>
   <div class="koi-layout">
     <el-container>
-      <el-header style="height: 100px; margin-top: 1px">
+      <el-header class="title-bar">
         <el-tabs
           v-model="activeName"
           type="border-card"
@@ -149,7 +148,24 @@ const tabView = useTabView();
 </template>
 
 <style lang="scss" scoped>
+:root {
+  --fallback-title-bar-height: 40px;
+}
 .koi-layout {
+  .title-bar {
+    height: 100px;
+    :deep(.el-tabs__header) {
+      user-select: none;
+      app-region: drag;
+      height: env(titlebar-area-height, var(--fallback-title-bar-height));
+      width: env(titlebar-area-width, 100%);
+      margin-left: env(titlebar-area-x, 0);
+    }
+  }
+
+  :deep(.el-tabs__nav) {
+    app-region: no-drag;
+  }
   :deep(.el-card) {
     --el-card-padding: 0;
   }
