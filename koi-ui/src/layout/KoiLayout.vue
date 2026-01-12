@@ -102,7 +102,7 @@ const tabView = useTabView();
           </el-tab-pane>
         </el-tabs>
       </el-header>
-      <el-main>
+      <el-main style="margin-top: 100px">
         <el-tabs
           v-model="activeTab"
           @tab-click="handleClick"
@@ -153,19 +153,22 @@ const tabView = useTabView();
 }
 .koi-layout {
   .title-bar {
+    position: fixed;
+    z-index: 99999999999;
+    width: 100vw;
     height: 100px;
-    :deep(.el-tabs__header) {
+    :deep(.el-tabs__nav-wrap) {
       user-select: none;
       app-region: drag;
       height: env(titlebar-area-height, var(--fallback-title-bar-height));
       width: env(titlebar-area-width, 100%);
-      margin-left: env(titlebar-area-x, 0);
+      padding-left: env(titlebar-area-x, 0);
+    }
+    :deep(.el-tabs__nav) {
+      app-region: no-drag;
     }
   }
 
-  :deep(.el-tabs__nav) {
-    app-region: no-drag;
-  }
   :deep(.el-card) {
     --el-card-padding: 0;
   }
