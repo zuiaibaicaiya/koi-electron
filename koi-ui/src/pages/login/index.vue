@@ -1,4 +1,5 @@
 <template>
+  <div class="title-bar"></div>
   <div class="login-container">
     <el-form
       ref="ruleFormRef"
@@ -69,6 +70,14 @@ const resetForm = (formEl: FormInstance | undefined) => {
 };
 </script>
 <style scoped lang="scss">
+.title-bar {
+  position: fixed;
+  user-select: none;
+  app-region: drag;
+  height: env(titlebar-area-height, var(--fallback-title-bar-height));
+  width: env(titlebar-area-width, 100vw);
+  padding-left: env(titlebar-area-x, 0);
+}
 .login-container {
   position: fixed;
   width: 500px;
