@@ -2,7 +2,7 @@
 import { nextTick, reactive, ref, useTemplateRef, watchPostEffect } from 'vue';
 import type { DropdownInstance, TabsPaneContext } from 'element-plus';
 import { useTabView } from '@/store/tabView.ts';
-import { useRoute, useRouter } from 'vue-router';
+import { type RouteLocationNormalized, useRoute, useRouter } from 'vue-router';
 
 const router = useRouter();
 const route = useRoute();
@@ -37,7 +37,12 @@ const handleHeaderClick = (tab: TabsPaneContext) => {
 watchPostEffect(() => {
   activeTab.value = route.fullPath;
 });
-
+function changeTab(_route: RouteLocationNormalized) {
+  router.push({
+    path: _route.fullPath,
+    query: _route.query,
+  });
+}
 const tabView = useTabView();
 </script>
 
@@ -103,20 +108,21 @@ const tabView = useTabView();
         </el-tabs>
       </el-header>
       <el-main style="margin-top: 100px">
-        <el-tabs
-          v-model="activeTab"
-          @tab-click="handleClick"
-          @contextmenu.prevent="onRightClick"
+        <el-space
+          style="position: fixed; top: 100px; z-index: 9999; width: 100vw"
         >
-          <el-tab-pane
+          <el-tag
+            @contextmenu.prevent="onRightClick"
+            closable
             v-for="item in tabView.tabViewList"
-            :name="item.fullPath"
             :key="item.fullPath"
-            lazy
-            :label="item!.meta!.title as unknown as string"
+            @click="changeTab(item)"
+            size="large"
+            :type="$route.fullPath === item.fullPath ? 'primary' : 'info'"
           >
-          </el-tab-pane>
-        </el-tabs>
+            {{ item?.meta?.title }}
+          </el-tag>
+        </el-space>
         <el-dropdown
           ref="dropdown"
           trigger="contextmenu"
@@ -133,7 +139,7 @@ const tabView = useTabView();
             </el-dropdown-menu>
           </template>
         </el-dropdown>
-        <el-card style="min-height: calc(100vh - 160px)">
+        <el-card style="min-height: calc(100vh - 160px); margin-top: 40px">
           <router-view v-slot="{ Component, route }">
             <transition name="fade-transform" mode="out-in">
               <keep-alive>
