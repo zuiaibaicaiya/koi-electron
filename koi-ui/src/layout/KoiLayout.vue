@@ -9,26 +9,16 @@ const route = useRoute();
 const activeName = ref('system');
 const activeTab = ref('/user');
 const dropdownRef = useTemplateRef<DropdownInstance>('dropdown');
-function showClick() {
-  if (!dropdownRef.value) return;
-  dropdownRef.value.handleOpen();
-}
 const tmpPosition = reactive({
   left: '',
   top: '',
 });
-const handleClick = (tab: TabsPaneContext) => {
-  activeTab.value = tab.props.name as string;
-  router.replace({ path: activeTab.value });
-};
 function onRightClick(e: MouseEvent) {
-  const { x, y, width, height } = (
-    e.target as HTMLElement
-  ).getBoundingClientRect();
+  const { x, y, width, height } = (e.currentTarget as HTMLElement).getBoundingClientRect();
   tmpPosition.left = `${x + width / 2}px`;
   tmpPosition.top = `${y + height}px`;
   nextTick(() => {
-    showClick();
+    dropdownRef.value?.handleOpen();
   });
 }
 const handleHeaderClick = (tab: TabsPaneContext) => {
@@ -50,69 +40,34 @@ const tabView = useTabView();
   <div class="koi-layout">
     <el-container>
       <el-header class="title-bar">
-        <el-tabs
-          v-model="activeName"
-          type="border-card"
-          @tab-click="handleHeaderClick"
-        >
+        <el-tabs v-model="activeName" type="border-card" @tab-click="handleHeaderClick">
           <el-tab-pane label="仪表盘" name="dashboard">仪表盘</el-tab-pane>
           <el-tab-pane label="客户管理" name="customer">客户管理</el-tab-pane>
           <el-tab-pane label="系统设置" name="system">
             <el-space>
               <router-link to="/user">
-                <el-button
-                  :type="$route.fullPath === '/user' ? 'primary' : 'default'"
-                  link
-                >
-                  用户管理
-                </el-button>
+                <el-button :type="$route.fullPath === '/user' ? 'primary' : 'default'" link> 用户管理 </el-button>
               </router-link>
               <router-link to="/role">
-                <el-button
-                  :type="$route.fullPath === '/role' ? 'primary' : 'default'"
-                  link
-                >
-                  角色管理
-                </el-button>
+                <el-button :type="$route.fullPath === '/role' ? 'primary' : 'default'" link> 角色管理 </el-button>
               </router-link>
               <router-link to="/department">
-                <el-button
-                  :type="
-                    $route.fullPath === '/department' ? 'primary' : 'default'
-                  "
-                  link
-                >
-                  部门管理
-                </el-button>
+                <el-button :type="$route.fullPath === '/department' ? 'primary' : 'default'" link> 部门管理 </el-button>
               </router-link>
               <router-link to="/permission">
-                <el-button
-                  :type="
-                    $route.fullPath === '/permission' ? 'primary' : 'default'
-                  "
-                  link
-                >
-                  权限管理
-                </el-button>
+                <el-button :type="$route.fullPath === '/permission' ? 'primary' : 'default'" link> 权限管理 </el-button>
               </router-link>
               <router-link to="/record">
-                <el-button
-                  :type="$route.fullPath === '/record' ? 'primary' : 'default'"
-                  link
-                >
-                  录音机
-                </el-button>
+                <el-button :type="$route.fullPath === '/record' ? 'primary' : 'default'" link> 录音机 </el-button>
               </router-link>
             </el-space>
           </el-tab-pane>
         </el-tabs>
       </el-header>
       <el-main style="margin-top: 100px">
-        <el-space
-          style="position: fixed; top: 100px; z-index: 9999; width: 100vw"
-        >
+        <el-space style="position: fixed; top: 100px; z-index: 9999; width: 100vw">
           <el-tag
-            @contextmenu.prevent="onRightClick"
+            @contextmenu.capture="onRightClick"
             closable
             v-for="item in tabView.tabViewList"
             :key="item.fullPath"
@@ -123,12 +78,7 @@ const tabView = useTabView();
             {{ item?.meta?.title }}
           </el-tag>
         </el-space>
-        <el-dropdown
-          ref="dropdown"
-          trigger="contextmenu"
-          :style="tmpPosition"
-          style="position: absolute"
-        >
+        <el-dropdown ref="dropdown" trigger="contextmenu" :style="tmpPosition" style="position: absolute">
           <span></span>
           <template #dropdown>
             <el-dropdown-menu>
@@ -174,7 +124,9 @@ const tabView = useTabView();
       app-region: no-drag;
     }
   }
-
+  :deep(.el-tag__content) {
+    user-select: none;
+  }
   :deep(.el-card) {
     --el-card-padding: 0;
   }
