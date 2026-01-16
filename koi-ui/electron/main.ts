@@ -60,17 +60,13 @@ const createWindow = async () => {
   const storage = store.get<string>('storage');
   if (process.env['ELECTRON_RENDERER_URL']) {
     if (storage) {
-      await mainWindow
-        .loadURL(process.env['ELECTRON_RENDERER_URL'])
-        .then(() => {
-          mainWindow.webContents.openDevTools({ mode: 'bottom' });
-        });
+      await mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL']).then(() => {
+        mainWindow.webContents.openDevTools({ mode: 'bottom' });
+      });
     } else {
-      await mainWindow
-        .loadURL(process.env['ELECTRON_RENDERER_URL'] + '#/setting')
-        .then(() => {
-          // mainWindow.webContents.openDevTools({ mode: 'bottom' });
-        });
+      await mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'] + '#/setting').then(() => {
+        // mainWindow.webContents.openDevTools({ mode: 'bottom' });
+      });
     }
   } else {
     if (storage) {
@@ -94,17 +90,14 @@ ipcMain.handle('selectFolder', () => {
 if (!__IS_DEV__) {
   const configPath = store.path;
   const { signal } = controller;
-  const koiServer = fork(
-    join(app.getAppPath(), 'koi-server', 'dist', 'main.js'),
-    {
-      signal,
-      env: {
-        NODE_ENV: 'production',
-        configPath,
-      },
-      silent: true,
+  const koiServer = fork(join(app.getAppPath(), 'koi-server', 'dist', 'main.js'), {
+    signal,
+    env: {
+      NODE_ENV: 'production',
+      configPath,
     },
-  );
+    silent: true,
+  });
   koiServer.once('error', (err) => {
     console.log(err);
   });
@@ -141,6 +134,17 @@ if (!gotTheLock) {
       { useSystemPicker: true },
     );
     await createWindow();
+    if (process.platform === 'win32') {
+      // 拦截系统菜单初始化
+      const WM_INIT_MENU = 0x0116;
+      mainWindow.hookWindowMessage(WM_INIT_MENU, () => {
+        mainWindow.setEnabled(false);
+        setImmediate(() => {
+          mainWindow.setEnabled(true);
+        });
+        return true;
+      });
+    }
     ipcMain.handle('dialog:openDirectory', handleDirectoryOpen);
 
     globalShortcut.register('CommandOrControl+Shift+E', () => {

@@ -3,7 +3,7 @@ import { nextTick, reactive, ref, useTemplateRef, watchPostEffect } from 'vue';
 import type { DropdownInstance, TabsPaneContext } from 'element-plus';
 import { useTabView } from '@/store/tabView.ts';
 import { type RouteLocationNormalized, useRoute, useRouter } from 'vue-router';
-
+const tabView = useTabView();
 const router = useRouter();
 const route = useRoute();
 const activeName = ref('system');
@@ -33,7 +33,10 @@ function changeTab(_route: RouteLocationNormalized) {
     query: _route.query,
   });
 }
-const tabView = useTabView();
+function closeTab(_route: RouteLocationNormalized) {
+  tabView.remove(_route);
+  router.push('/');
+}
 </script>
 
 <template>
@@ -64,14 +67,17 @@ const tabView = useTabView();
           </el-tab-pane>
         </el-tabs>
       </el-header>
-      <el-main style="margin-top: 100px">
-        <el-space style="position: fixed; top: 100px; z-index: 9999; width: 100vw">
+      <el-main style="margin-top: 100px; width: 100vw">
+        <el-space alignment="start" style="position: fixed; top: 100px; z-index: 9999; width: 100vw">
           <el-tag
+            name="fade-transform"
+            mode="out-in"
             @contextmenu.capture="onRightClick"
             closable
             v-for="item in tabView.tabViewList"
             :key="item.fullPath"
             @click="changeTab(item)"
+            @close="closeTab(item)"
             size="large"
             :type="$route.fullPath === item.fullPath ? 'primary' : 'info'"
           >
