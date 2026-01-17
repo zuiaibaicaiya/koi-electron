@@ -68,41 +68,48 @@ function closeTab(_route: RouteLocationNormalized) {
         </el-tabs>
       </el-header>
       <el-main style="margin-top: 100px; width: 100vw">
-        <el-space alignment="start" style="position: fixed; top: 100px; z-index: 9999; width: 100vw">
-          <el-tag
-            name="fade-transform"
-            mode="out-in"
-            @contextmenu.capture="onRightClick"
-            closable
-            v-for="item in tabView.tabViewList"
-            :key="item.fullPath"
-            @click="changeTab(item)"
-            @close="closeTab(item)"
-            size="large"
-            :type="$route.fullPath === item.fullPath ? 'primary' : 'info'"
-          >
-            {{ item?.meta?.title }}
-          </el-tag>
-        </el-space>
-        <el-dropdown ref="dropdown" trigger="contextmenu" :style="tmpPosition" style="position: absolute">
-          <span></span>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item>关闭当前</el-dropdown-item>
-              <el-dropdown-item>关闭左侧</el-dropdown-item>
-              <el-dropdown-item>关闭右侧</el-dropdown-item>
-              <el-dropdown-item>关闭全部</el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
-        <el-card style="min-height: calc(100vh - 160px); margin-top: 40px">
-          <router-view v-slot="{ Component, route }">
-            <transition name="fade-transform" mode="out-in">
-              <keep-alive>
-                <component :is="Component" :key="route.fullPath" />
-              </keep-alive>
-            </transition>
-          </router-view>
+        <div style="width: 100%; position: fixed">
+          <el-scrollbar>
+            <div class="scrollbar-flex-content">
+              <el-tag
+                name="fade-transform"
+                mode="out-in"
+                class="scrollbar-item"
+                @contextmenu.capture="onRightClick"
+                closable
+                v-for="item in tabView.tabViewList"
+                :key="item.fullPath"
+                @click="changeTab(item)"
+                @close="closeTab(item)"
+                size="large"
+                :type="$route.fullPath === item.fullPath ? 'primary' : 'info'"
+              >
+                {{ item?.meta?.title }}
+              </el-tag>
+              <el-dropdown ref="dropdown" trigger="contextmenu" :style="tmpPosition" style="position: fixed">
+                <span></span>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item>关闭当前</el-dropdown-item>
+                    <el-dropdown-item>关闭左侧</el-dropdown-item>
+                    <el-dropdown-item>关闭右侧</el-dropdown-item>
+                    <el-dropdown-item>关闭全部</el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+            </div>
+          </el-scrollbar>
+        </div>
+        <el-card style="margin-top: 45px">
+          <el-scrollbar max-height="calc(100vh - 150px)">
+            <router-view v-slot="{ Component, route }">
+              <transition name="fade-transform" mode="out-in">
+                <keep-alive>
+                  <component :is="Component" :key="route.fullPath" />
+                </keep-alive>
+              </transition>
+            </router-view>
+          </el-scrollbar>
         </el-card>
       </el-main>
     </el-container>
@@ -114,6 +121,22 @@ function closeTab(_route: RouteLocationNormalized) {
   --fallback-title-bar-height: 40px;
 }
 .koi-layout {
+  .scrollbar-flex-content {
+    display: flex;
+    width: fit-content;
+    top: 100px;
+    z-index: 9999;
+    height: 45px;
+  }
+  .scrollbar-item {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    margin-right: 10px;
+    text-align: center;
+  }
   .title-bar {
     position: fixed;
     z-index: 99999999999;
