@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import Store from 'electron-store';
-import { useDark, useToggle } from '@vueuse/core';
+import { useDark, usePreferredDark } from '@vueuse/core';
+import { watch } from 'vue';
 
 interface State {
   storage?: string;
@@ -13,13 +14,21 @@ const store = new Store<State>({
 // store.openInEditor();
 export const useConfigStore = defineStore('config', {
   state: (): State => {
-    const isDark = useDark();
-    if (store.get('isDark')) {
-      if (!isDark.value) {
-        const toggleDark = useToggle(isDark);
-        toggleDark();
-      }
-    }
+    const isDark = useDark({
+      selector: 'html',
+      attribute: 'class',
+      valueDark: 'dark',
+      valueLight: 'light',
+    });
+    const prefersDark = usePreferredDark();
+    watch(
+      prefersDark,
+      (dark) => {
+        isDark.value = dark;
+      },
+      { immediate: true },
+    );
+
     return {
       isDark: isDark.value,
       storage: store.get('storage') as string,

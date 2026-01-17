@@ -1,6 +1,24 @@
-body{
+body {
   padding: 0;
   margin: 0 auto;
   width: 100vw;
   height: 100vh;
 }
+
+html.dark {
+  body {
+    background: #333;
+    color: white;
+  }
+
+}
+
+html.light {
+  body {
+    background: #ddd;
+    color: black;
+  }
+
+}
+
+

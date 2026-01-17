@@ -1,26 +1,29 @@
 import {
   app,
   BrowserWindow,
-  ipcMain,
+  type BrowserWindowConstructorOptions,
+  desktopCapturer,
   dialog,
   globalShortcut,
-  desktopCapturer,
+  ipcMain,
+  nativeTheme,
   session,
-  type BrowserWindowConstructorOptions,
 } from 'electron';
 import Store from 'electron-store';
 import { fork } from 'child_process';
 import { join } from 'node:path';
 import { homedir } from 'node:os';
 import process from 'node:process';
+
 app.commandLine.appendSwitch('remote-allow-origins', '*');
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true';
 const __IS_DEV__ = process.env.NODE_ENV === 'development';
 Store.initRenderer();
-
+type themeSource = 'light' | 'dark' | 'system';
 interface IStore {
   storage: string | null;
   backup: string | null;
+  themeSource: themeSource;
   init: boolean;
 }
 
@@ -28,6 +31,7 @@ const store = new Store<IStore>({
   name: 'koi-electron',
   defaults: {
     init: false,
+    themeSource: 'system',
     storage: join(homedir(), 'koi-electron', 'storage'),
     backup: join(homedir(), 'koi-electron', 'backup'),
   },
@@ -44,6 +48,7 @@ let mainWindow: BrowserWindow;
 const createWindow = async () => {
   const config: BrowserWindowConstructorOptions = {
     titleBarStyle: 'hidden',
+    backgroundColor: nativeTheme.shouldUseDarkColors ? 'black' : 'white',
     titleBarOverlay: {
       color: '#2f3241',
       symbolColor: '#74b1be',
@@ -119,6 +124,9 @@ if (!gotTheLock) {
     }
   });
   app.whenReady().then(async () => {
+    ipcMain.handle('toggle-mode', (_event, themeSource: themeSource) => {
+      nativeTheme.themeSource = themeSource;
+    });
     session.defaultSession.setDisplayMediaRequestHandler(
       (_request, callback) => {
         desktopCapturer
@@ -167,6 +175,7 @@ if (!gotTheLock) {
   });
   app.on('quit', () => {
     globalShortcut.unregisterAll();
+    session.defaultSession.setDisplayMediaRequestHandler(null);
     if (!__IS_DEV__) {
       controller.abort();
     }
