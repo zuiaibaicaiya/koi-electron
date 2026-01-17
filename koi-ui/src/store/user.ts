@@ -16,7 +16,9 @@ export const useUserStore = defineStore('user', {
           status,
           message,
         });
-      } catch (e) {}
+      } catch (e) {
+        return Promise.reject(e);
+      }
     },
   },
 });

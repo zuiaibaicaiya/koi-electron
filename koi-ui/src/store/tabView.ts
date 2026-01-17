@@ -11,7 +11,7 @@ export const useTabView = defineStore('tabView', {
     const router = useRouter();
     // 获取所有路由
     const allRoutes: RouteRecordNormalized[] = router.getRoutes();
-    const home = allRoutes.find((r) => r.path === '/');
+    const home = allRoutes.find((r) => r.path === '/home');
     return {
       tabViewList: [home as unknown as RouteLocationNormalized],
     };

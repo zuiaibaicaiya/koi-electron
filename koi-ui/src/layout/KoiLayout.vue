@@ -35,7 +35,7 @@ function changeTab(_route: RouteLocationNormalized) {
 }
 function closeTab(_route: RouteLocationNormalized) {
   tabView.remove(_route);
-  router.push('/');
+  router.push('/home');
 }
 </script>
 

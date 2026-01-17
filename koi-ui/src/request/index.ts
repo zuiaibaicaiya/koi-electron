@@ -30,15 +30,16 @@ request.interceptors.request.use((config) => {
 // 响应拦截器
 request.interceptors.response.use(
   (response) => {
+    if (response === undefined) {
+      return Promise.reject(response);
+    }
     pendingRequests.delete(response?.config?.url);
     return response.data;
   },
   (error) => {
     pendingRequests.delete(error?.config?.url);
     if (error.status === 401) {
-      pendingRequests.forEach((controller) =>
-        controller.abort('路由切换，取消请求'),
-      );
+      pendingRequests.forEach((controller) => controller.abort('路由切换，取消请求'));
       pendingRequests.clear();
       localStorage.clear();
       router.replace('/login');

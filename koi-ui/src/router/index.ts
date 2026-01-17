@@ -1,8 +1,4 @@
-import {
-  createRouter,
-  createWebHashHistory,
-  type RouteRecordRaw,
-} from 'vue-router';
+import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-router';
 import { useConfigStore } from '@/store/config.ts';
 import { useTabView } from '@/store/tabView.ts';
 import { useUserStore } from '@/store/user.ts';
@@ -17,14 +13,19 @@ const Permission = () => import('@/pages/permission/index.vue');
 const Setting = () => import('@/pages/setting/index.vue');
 const Login = () => import('@/pages/login/index.vue');
 const Record = () => import('@/pages/record/index.vue');
+const Splash = () => import('@/pages/splash/index.vue');
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: KoiLayout,
+    redirect: '/splash',
+    meta: {
+      title: '跳转页',
+    },
     children: [
       {
-        path: '/',
+        path: '/home',
         component: Home,
         meta: {
           title: '首页',
@@ -72,15 +73,25 @@ const routes: RouteRecordRaw[] = [
     component: Setting,
   },
   {
+    path: '/splash',
+    component: Splash,
+    meta: {
+      title: '启动页',
+    },
+  },
+  {
     path: '/login',
     component: Login,
+    meta: {
+      title: '登录页',
+    },
   },
 ];
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
 });
-const whiteList = ['/setting', '/login'];
+const whiteList = ['/setting', '/login', '/splash', '/'];
 router.beforeEach(async (to, _from, next) => {
   const configStore = useConfigStore();
   const tabView = useTabView();
@@ -93,6 +104,7 @@ router.beforeEach(async (to, _from, next) => {
     } else {
       const token = localStorage.getItem('token');
       if (!token) {
+        tabView.$reset();
         next({ path: '/login', replace: true });
       } else {
         if (!userStore.user) {
