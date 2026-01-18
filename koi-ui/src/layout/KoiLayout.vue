@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { nextTick, reactive, ref, useTemplateRef, watchPostEffect } from 'vue';
+import { type CSSProperties, nextTick, reactive, ref, useTemplateRef, watchPostEffect } from 'vue';
 import type { DropdownInstance, TabsPaneContext } from 'element-plus';
 import { useTabView } from '@/store/tabView.ts';
 import { type RouteLocationNormalized, useRoute, useRouter } from 'vue-router';
@@ -9,13 +9,14 @@ const route = useRoute();
 const activeName = ref('system');
 const activeTab = ref('/user');
 const dropdownRef = useTemplateRef<DropdownInstance>('dropdown');
-const tmpPosition = reactive({
+const tmpPosition = reactive<CSSProperties>({
   left: '',
   top: '',
+  position: 'fixed',
 });
 function onRightClick(e: MouseEvent) {
-  const { x, y, width, height } = (e.currentTarget as HTMLElement).getBoundingClientRect();
-  tmpPosition.left = `${x + width / 2}px`;
+  const { x, y, height } = (e.currentTarget as HTMLElement).getBoundingClientRect();
+  tmpPosition.left = `${x}px`;
   tmpPosition.top = `${y + height}px`;
   nextTick(() => {
     dropdownRef.value?.handleOpen();
@@ -86,8 +87,8 @@ function closeTab(_route: RouteLocationNormalized) {
               >
                 {{ item?.meta?.title }}
               </el-tag>
-              <el-dropdown ref="dropdown" trigger="contextmenu" :style="tmpPosition" style="position: fixed">
-                <span></span>
+              <el-dropdown :popper-style="tmpPosition" ref="dropdown" trigger="contextmenu">
+                <div></div>
                 <template #dropdown>
                   <el-dropdown-menu>
                     <el-dropdown-item>关闭当前</el-dropdown-item>
@@ -153,8 +154,9 @@ function closeTab(_route: RouteLocationNormalized) {
       app-region: no-drag;
     }
   }
-  :deep(.el-tag__content) {
+  :deep(.el-tag) {
     user-select: none;
+    cursor: pointer;
   }
   :deep(.el-card) {
     --el-card-padding: 0;
