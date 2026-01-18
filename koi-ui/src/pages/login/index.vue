@@ -54,7 +54,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
       const { status, message, data } = await login(ruleForm);
       if (status === 200) {
         localStorage.setItem('token', data!.token);
-        router.replace('/');
+        router.replace('/home');
       } else {
         ElMessage.error(message);
       }

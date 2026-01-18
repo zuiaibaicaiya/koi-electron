@@ -77,7 +77,7 @@ function closeTab(_route: RouteLocationNormalized) {
                 mode="out-in"
                 class="scrollbar-item"
                 @contextmenu.capture="onRightClick"
-                closable
+                :closable="item.fullPath !== '/home'"
                 v-for="item in tabView.tabViewList"
                 :key="item.fullPath"
                 @click="changeTab(item)"
