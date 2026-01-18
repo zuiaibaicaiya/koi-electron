@@ -53,6 +53,9 @@ onMounted(() => {
       </template>
       <template #action="{ row }">
         <el-space>
+          <router-link :to="`/user/${row.id}`">
+            <el-button type="primary"> 详情</el-button>
+          </router-link>
           <el-button type="primary">编辑</el-button>
           <el-button type="danger">删除</el-button>
         </el-space>

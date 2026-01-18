@@ -1,8 +1,9 @@
 <script lang="ts" setup>
-import { type CSSProperties, nextTick, reactive, ref, useTemplateRef, watchPostEffect } from 'vue';
+import { type CSSProperties, nextTick, reactive, ref, shallowRef, useTemplateRef, watchPostEffect } from 'vue';
 import type { DropdownInstance, TabsPaneContext } from 'element-plus';
 import { useTabView } from '@/store/tabView.ts';
 import { type RouteLocationNormalized, useRoute, useRouter } from 'vue-router';
+
 const tabView = useTabView();
 const router = useRouter();
 const route = useRoute();
@@ -14,11 +15,13 @@ const tmpPosition = reactive<CSSProperties>({
   top: '',
   position: 'fixed',
 });
-function onRightClick(e: MouseEvent) {
+const current = shallowRef<RouteLocationNormalized>();
+function onRightClick(e: MouseEvent, item: RouteLocationNormalized) {
   const { x, y, height } = (e.currentTarget as HTMLElement).getBoundingClientRect();
   tmpPosition.left = `${x}px`;
   tmpPosition.top = `${y + height}px`;
   nextTick(() => {
+    current.value = item;
     dropdownRef.value?.handleOpen();
   });
 }
@@ -26,17 +29,38 @@ const handleHeaderClick = (tab: TabsPaneContext) => {
   activeName.value = tab.props.name as string;
 };
 watchPostEffect(() => {
-  activeTab.value = route.fullPath;
+  activeTab.value = route.path;
 });
 function changeTab(_route: RouteLocationNormalized) {
   router.push({
-    path: _route.fullPath,
+    path: _route.path,
     query: _route.query,
   });
 }
 function closeTab(_route: RouteLocationNormalized) {
   tabView.remove(_route);
-  router.push('/home');
+  router.replace('/home');
+}
+function selectDropItem(command: string | number | object) {
+  const query = {
+    __time: new Date().getTime(),
+  };
+  Object.assign(query, current.value?.query);
+  switch (command) {
+    case 'refresh':
+      router.replace({ path: current.value?.path, query });
+      break;
+    case 'left':
+      break;
+    case 'right':
+      break;
+    case 'all':
+      tabView.tabViewList = [];
+      nextTick(() => {
+        router.replace('/home');
+      });
+      break;
+  }
 }
 </script>
 
@@ -50,19 +74,19 @@ function closeTab(_route: RouteLocationNormalized) {
           <el-tab-pane label="系统设置" name="system">
             <el-space>
               <router-link to="/user">
-                <el-button :type="$route.fullPath === '/user' ? 'primary' : 'default'" link> 用户管理 </el-button>
+                <el-button :type="$route.path === '/user' ? 'primary' : 'default'" link> 用户管理 </el-button>
               </router-link>
               <router-link to="/role">
-                <el-button :type="$route.fullPath === '/role' ? 'primary' : 'default'" link> 角色管理 </el-button>
+                <el-button :type="$route.path === '/role' ? 'primary' : 'default'" link> 角色管理 </el-button>
               </router-link>
               <router-link to="/department">
-                <el-button :type="$route.fullPath === '/department' ? 'primary' : 'default'" link> 部门管理 </el-button>
+                <el-button :type="$route.path === '/department' ? 'primary' : 'default'" link> 部门管理 </el-button>
               </router-link>
               <router-link to="/permission">
-                <el-button :type="$route.fullPath === '/permission' ? 'primary' : 'default'" link> 权限管理 </el-button>
+                <el-button :type="$route.path === '/permission' ? 'primary' : 'default'" link> 权限管理 </el-button>
               </router-link>
               <router-link to="/record">
-                <el-button :type="$route.fullPath === '/record' ? 'primary' : 'default'" link> 录音机 </el-button>
+                <el-button :type="$route.path === '/record' ? 'primary' : 'default'" link> 录音机 </el-button>
               </router-link>
             </el-space>
           </el-tab-pane>
@@ -76,25 +100,25 @@ function closeTab(_route: RouteLocationNormalized) {
                 name="fade-transform"
                 mode="out-in"
                 class="scrollbar-item"
-                @contextmenu.capture="onRightClick"
-                :closable="item.fullPath !== '/home'"
+                :closable="item.path !== '/home'"
                 v-for="item in tabView.tabViewList"
-                :key="item.fullPath"
+                @contextmenu.capture="(e) => onRightClick(e, item)"
+                :key="item.path"
                 @click="changeTab(item)"
                 @close="closeTab(item)"
                 size="large"
-                :type="$route.fullPath === item.fullPath ? 'primary' : 'info'"
+                :type="$route.path === item.path ? 'primary' : 'info'"
               >
                 {{ item?.meta?.title }}
               </el-tag>
-              <el-dropdown :popper-style="tmpPosition" ref="dropdown" trigger="contextmenu">
+              <el-dropdown :popper-style="tmpPosition" ref="dropdown" trigger="contextmenu" @command="selectDropItem">
                 <div></div>
                 <template #dropdown>
                   <el-dropdown-menu>
-                    <el-dropdown-item>关闭当前</el-dropdown-item>
-                    <el-dropdown-item>关闭左侧</el-dropdown-item>
-                    <el-dropdown-item>关闭右侧</el-dropdown-item>
-                    <el-dropdown-item>关闭全部</el-dropdown-item>
+                    <el-dropdown-item command="refresh">刷新当前</el-dropdown-item>
+                    <el-dropdown-item command="left">关闭左侧</el-dropdown-item>
+                    <el-dropdown-item command="right">关闭右侧</el-dropdown-item>
+                    <el-dropdown-item command="all">关闭全部</el-dropdown-item>
                   </el-dropdown-menu>
                 </template>
               </el-dropdown>

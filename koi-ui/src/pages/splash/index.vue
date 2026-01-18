@@ -5,7 +5,6 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 onMounted(() => {
   request('/ping').finally(() => {
-    console.log(1);
     router.push({ path: '/home' });
   });
 });
