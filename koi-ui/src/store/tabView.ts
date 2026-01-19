@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { RouteLocationNormalized, RouteRecordNormalized } from 'vue-router';
+import type { RouteLocationNormalized, Router, RouteRecordNormalized } from 'vue-router';
 import { useRouter } from 'vue-router';
 
 interface State {
@@ -24,6 +24,24 @@ export const useTabView = defineStore('tabView', {
     },
     remove(route: RouteLocationNormalized) {
       this.tabViewList = this.tabViewList.filter((v) => v.fullPath !== route.fullPath);
+    },
+    closeRight(route: RouteLocationNormalized) {
+      const tmp: RouteLocationNormalized[] = [];
+      let flag = false;
+      for (const _route of this.tabViewList) {
+        if (_route.path === route.path) {
+          flag = true;
+        }
+        if (flag) {
+          tmp.push(_route);
+        }
+      }
+      this.tabViewList = tmp;
+    },
+    closeAll(router: Router) {
+      const allRoutes: RouteRecordNormalized[] = router.getRoutes();
+      const home = allRoutes.find((r) => r.path === '/home');
+      this.tabViewList = [home as unknown as RouteLocationNormalized];
     },
   },
   persist: true,

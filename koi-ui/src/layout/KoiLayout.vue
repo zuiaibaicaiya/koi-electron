@@ -53,9 +53,13 @@ function selectDropItem(command: string | number | object) {
     case 'left':
       break;
     case 'right':
+      tabView.closeRight(current.value!);
+      nextTick(() => {
+        router.replace({ path: current.value?.path, query });
+      });
       break;
     case 'all':
-      tabView.tabViewList = [];
+      tabView.closeAll(router);
       nextTick(() => {
         router.replace('/home');
       });
