@@ -9,16 +9,12 @@ export const useUserStore = defineStore('user', {
   },
   actions: {
     async getCurrentUser() {
-      try {
-        const { data: user, status, message } = await getCurrentUserInfo();
-        this.user = user;
-        return Promise.resolve({
-          status,
-          message,
-        });
-      } catch (e) {
-        return Promise.reject(e);
-      }
+      const { data: user, status, message } = await getCurrentUserInfo();
+      this.user = user;
+      return Promise.resolve({
+        status,
+        message,
+      });
     },
   },
 });

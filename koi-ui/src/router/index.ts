@@ -116,17 +116,11 @@ router.beforeEach(async (to, _from, next) => {
         next({ path: '/login', replace: true });
       } else {
         if (!userStore.user) {
-          try {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-expect-error
-            const { status, message } = await userStore.getCurrentUser();
-            if (status && status !== 200) {
-              ElMessage.error(message);
-              localStorage.clear();
-              return next({ path: '/login', replace: true });
-            }
-          } catch (e) {
-            console.log(e);
+          const { status, message } = await userStore.getCurrentUser();
+          if (status && status !== 200) {
+            ElMessage.error(message);
+            localStorage.clear();
+            return next({ path: '/login', replace: true });
           }
         }
         tabView.addTag(to);
