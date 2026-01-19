@@ -25,7 +25,7 @@ export const useTabView = defineStore('tabView', {
     remove(route: RouteLocationNormalized) {
       this.tabViewList = this.tabViewList.filter((v) => v.fullPath !== route.fullPath);
     },
-    closeRight(route: RouteLocationNormalized) {
+    closeLeft(route: RouteLocationNormalized) {
       const tmp: RouteLocationNormalized[] = [];
       let flag = false;
       for (const _route of this.tabViewList) {
@@ -34,6 +34,20 @@ export const useTabView = defineStore('tabView', {
         }
         if (flag) {
           tmp.push(_route);
+        } else {
+          if (_route.path === '/home') {
+            tmp.push(_route);
+          }
+        }
+      }
+      this.tabViewList = tmp;
+    },
+    closeRight(route: RouteLocationNormalized) {
+      const tmp: RouteLocationNormalized[] = [];
+      for (const _route of this.tabViewList) {
+        tmp.push(_route);
+        if (_route.path === route.path) {
+          break;
         }
       }
       this.tabViewList = tmp;

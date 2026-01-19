@@ -51,6 +51,10 @@ function selectDropItem(command: string | number | object) {
       router.replace({ path: current.value?.path, query });
       break;
     case 'left':
+      tabView.closeLeft(current.value!);
+      nextTick(() => {
+        router.replace({ path: current.value?.path, query });
+      });
       break;
     case 'right':
       tabView.closeRight(current.value!);
