@@ -77,6 +77,22 @@ const routes: RouteRecordRaw[] = [
     ],
   },
   {
+    path: '/demo',
+    component: KoiLayout,
+    meta: {
+      title: '示例',
+    },
+    children: [
+      {
+        path: 'guard',
+        component: () => import('@/pages/demo/guard/index.vue'),
+        meta: {
+          title: '离开确认',
+        },
+      },
+    ],
+  },
+  {
     path: '/setting',
     component: Setting,
   },

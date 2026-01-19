@@ -71,6 +71,13 @@ function selectDropItem(command: string | number | object) {
         <el-tabs v-model="activeName" type="border-card" @tab-click="handleHeaderClick">
           <el-tab-pane label="仪表盘" name="dashboard">仪表盘</el-tab-pane>
           <el-tab-pane label="客户管理" name="customer">客户管理</el-tab-pane>
+          <el-tab-pane label="示例" name="demo">
+            <el-space>
+              <router-link to="/demo/guard">
+                <el-button :type="$route.path === '/demo/guard' ? 'primary' : 'default'" link> 离开确认 </el-button>
+              </router-link>
+            </el-space>
+          </el-tab-pane>
           <el-tab-pane label="系统设置" name="system">
             <el-space>
               <router-link to="/user">
