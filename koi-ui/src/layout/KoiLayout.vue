@@ -3,6 +3,7 @@ import { type CSSProperties, nextTick, reactive, ref, shallowRef, useTemplateRef
 import type { DropdownInstance, TabsPaneContext } from 'element-plus';
 import { useTabView } from '@/store/tabView.ts';
 import { type RouteLocationNormalized, useRoute, useRouter } from 'vue-router';
+import { Setting } from '@element-plus/icons-vue';
 
 const tabView = useTabView();
 const router = useRouter();
@@ -108,6 +109,7 @@ function selectDropItem(command: string | number | object) {
             </el-space>
           </el-tab-pane>
         </el-tabs>
+        <el-icon class="title-bar-setting"><Setting /></el-icon>
       </el-header>
       <el-main style="margin-top: 100px; width: 100vw">
         <div style="width: 100%; position: fixed">
@@ -161,13 +163,13 @@ function selectDropItem(command: string | number | object) {
 <style lang="scss" scoped>
 :root {
   --fallback-title-bar-height: 40px;
+  --fallback-title-bar-width: 0;
 }
 .koi-layout {
   .scrollbar-flex-content {
     display: flex;
     width: fit-content;
     top: 100px;
-    z-index: 9999;
     height: 45px;
   }
   .scrollbar-item {
@@ -181,7 +183,6 @@ function selectDropItem(command: string | number | object) {
   }
   .title-bar {
     position: fixed;
-    z-index: 99999999999;
     width: 100vw;
     height: 100px;
     :deep(.el-tabs__nav-wrap) {
@@ -194,6 +195,15 @@ function selectDropItem(command: string | number | object) {
     :deep(.el-tabs__nav) {
       app-region: no-drag;
     }
+  }
+  .title-bar-setting {
+    position: fixed;
+    right: 12px;
+    //left: calc(env(titlebar-area-width, var(--fallback-title-bar-width)));
+    top: calc(env(titlebar-area-height, var(--fallback-title-bar-height)) / 2);
+    transform: translateY(-50%);
+    cursor: pointer;
+    app-region: no-drag;
   }
   :deep(.el-tag) {
     user-select: none;
