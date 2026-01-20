@@ -32,10 +32,12 @@ watchPostEffect(() => {
   activeTab.value = route.path;
 });
 function changeTab(_route: RouteLocationNormalized) {
-  router.push({
-    path: _route.path,
-    query: _route.query,
-  });
+  if (current.value?.path !== _route.path) {
+    router.push({
+      path: _route.path,
+      query: _route.query,
+    });
+  }
 }
 function closeTab(_route: RouteLocationNormalized) {
   tabView.remove(_route);
