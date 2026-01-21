@@ -39,6 +39,7 @@ function changeTab(_route: RouteLocationNormalized) {
       query: _route.query,
     });
   }
+  current.value = _route;
 }
 function closeTab(_route: RouteLocationNormalized) {
   tabView.remove(_route);
@@ -199,9 +200,7 @@ function selectDropItem(command: string | number | object) {
   .title-bar-setting {
     position: fixed;
     right: 12px;
-    //left: calc(env(titlebar-area-width, var(--fallback-title-bar-width)));
-    top: calc(env(titlebar-area-height, var(--fallback-title-bar-height)) / 2);
-    transform: translateY(-50%);
+    top: 12px;
     cursor: pointer;
     app-region: no-drag;
   }
