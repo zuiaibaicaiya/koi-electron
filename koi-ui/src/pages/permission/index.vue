@@ -49,7 +49,7 @@ onMounted(() => {
         </el-space>
       </template>
       <template #role="{ row }">
-        {{ row?.role.name }}
+        {{ row?.role?.name }}
       </template>
       <template #action="{ row }">
         <el-space>
