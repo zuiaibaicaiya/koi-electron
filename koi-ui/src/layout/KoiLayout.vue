@@ -31,6 +31,7 @@ const handleHeaderClick = (tab: TabsPaneContext) => {
 };
 watchPostEffect(() => {
   activeTab.value = route.path;
+  current.value = route;
 });
 function changeTab(_route: RouteLocationNormalized) {
   if (current.value?.path !== _route.path) {
@@ -43,7 +44,9 @@ function changeTab(_route: RouteLocationNormalized) {
 }
 function closeTab(_route: RouteLocationNormalized) {
   tabView.remove(_route);
-  router.replace('/home');
+  if (current.value?.path === _route.path) {
+    router.replace('/home');
+  }
 }
 function selectDropItem(command: string | number | object) {
   const query = {
