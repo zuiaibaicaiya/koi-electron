@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="T">
-import { useSlots } from 'vue';
+import { useSlots, type VNode } from 'vue';
 
 interface Column {
   prop: string;
@@ -16,9 +16,9 @@ interface Props {
 defineProps<Props>();
 
 defineSlots<{
-  'toolbar-left': () => any;
-  'toolbar-right': () => any;
-  [key: string]: (props: { row: T; $index: number; column: Column }) => any;
+  'toolbar-left': () => VNode[];
+  'toolbar-right': () => VNode[];
+  [key: string]: (props: { row: T; $index: number; column: Column }) => VNode[];
 }>();
 
 // 检查插槽是否存在
@@ -30,10 +30,7 @@ const hasSlot = (name: string) => {
 <template>
   <div class="table-container">
     <!-- 工具栏区域 -->
-    <div
-      v-if="hasSlot('toolbar-left') || hasSlot('toolbar-right')"
-      class="table-toolbar"
-    >
+    <div v-if="hasSlot('toolbar-left') || hasSlot('toolbar-right')" class="table-toolbar">
       <div v-if="hasSlot('toolbar-left')" class="toolbar-left">
         <slot name="toolbar-left" />
       </div>
@@ -44,17 +41,8 @@ const hasSlot = (name: string) => {
     </div>
 
     <!-- 表格区域 -->
-    <el-table
-      :data="dataSource"
-      row-key="id"
-      v-bind="$attrs"
-      class="custom-table"
-    >
-      <el-table-column
-        v-for="column in columns"
-        :key="column.prop"
-        v-bind="column"
-      >
+    <el-table :data="dataSource" row-key="id" v-bind="$attrs" class="custom-table">
+      <el-table-column v-for="column in columns" :key="column.prop" v-bind="column">
         <!-- 动态slot处理 -->
         <template v-if="column.slot" #default="scope">
           <slot :name="column.slot" v-bind="{ ...scope }" />

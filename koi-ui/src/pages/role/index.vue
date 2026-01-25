@@ -3,7 +3,9 @@ import { onMounted, ref } from 'vue';
 import { ProTable } from '@/components/ProTable/index.ts';
 import { Plus, Refresh } from '@element-plus/icons-vue';
 import { getRoleList } from '@/api/role.ts';
-
+defineOptions({
+  name: 'Role',
+});
 const roleList = ref<Array<API.Role>>([]);
 const columns = [
   {

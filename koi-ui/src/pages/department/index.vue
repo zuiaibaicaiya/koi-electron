@@ -3,10 +3,10 @@ import { onMounted, ref } from 'vue';
 import { ProTable } from '@/components/ProTable/index.ts';
 import { Plus, Refresh } from '@element-plus/icons-vue';
 import { getDepartmentList } from '@/api/department.ts';
-
-const departmentList = ref<
-  Array<API.Department & { children: Array<API.Department> }>
->([]);
+defineOptions({
+  name: 'Department',
+});
+const departmentList = ref<Array<API.Department & { children: Array<API.Department> }>>([]);
 const columns = [
   {
     label: 'ID',

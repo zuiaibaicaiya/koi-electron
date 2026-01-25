@@ -1,5 +1,12 @@
 /// <reference types="@rsbuild/core/types" />
+import 'pinia';
+import { Router } from 'vue-router';
 
+declare module 'pinia' {
+  export interface PiniaCustomProperties {
+    $router: Router;
+  }
+}
 declare module '*.vue' {
   import type { DefineComponent } from 'vue';
 

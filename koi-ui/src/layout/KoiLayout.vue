@@ -1,5 +1,14 @@
 <script lang="ts" setup>
-import { type CSSProperties, nextTick, reactive, ref, shallowRef, useTemplateRef, watchPostEffect } from 'vue';
+import {
+  computed,
+  type CSSProperties,
+  nextTick,
+  reactive,
+  ref,
+  shallowRef,
+  useTemplateRef,
+  watchPostEffect,
+} from 'vue';
 import type { DropdownInstance, TabsPaneContext } from 'element-plus';
 import { useTabView } from '@/store/tabView.ts';
 import { type RouteLocationNormalized, useRoute, useRouter } from 'vue-router';
@@ -77,6 +86,7 @@ function selectDropItem(command: string | number | object) {
       break;
   }
 }
+const cacheRoutes = computed(() => tabView.tabViewList.map((v) => v.name).filter((v) => v) as unknown as Array<string>);
 </script>
 
 <template>
@@ -152,7 +162,7 @@ function selectDropItem(command: string | number | object) {
           <el-scrollbar max-height="calc(100vh - 150px)">
             <router-view v-slot="{ Component, route }">
               <transition name="fade-transform" mode="out-in">
-                <keep-alive>
+                <keep-alive :include="cacheRoutes">
                   <component :is="Component" :key="route.fullPath" />
                 </keep-alive>
               </transition>

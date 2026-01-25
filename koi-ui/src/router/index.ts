@@ -49,6 +49,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: '/role',
         component: Role,
+        name: 'Role',
         meta: {
           title: '角色管理',
         },
@@ -56,6 +57,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: '/department',
         component: Department,
+        name: 'Department',
         meta: {
           title: '部门管理',
         },
@@ -139,10 +141,15 @@ router.beforeEach(async (to, _from, next) => {
             return next({ path: '/login', replace: true });
           }
         }
-        tabView.addTag(to);
         next();
       }
     }
+  }
+});
+router.afterEach((to) => {
+  if (!whiteList.includes(to.path)) {
+    const tabView = useTabView();
+    tabView.addTag(to);
   }
 });
 export default router;
