@@ -4,6 +4,10 @@ import { getUserList } from '@/api/user.ts';
 import { ProTable } from '@/components/ProTable/index.ts';
 import { Plus, Refresh } from '@element-plus/icons-vue';
 import UserModal from '@/pages/user/components/UserModal.vue';
+defineOptions({
+  // eslint-disable-next-line vue/multi-word-component-names
+  name: 'User',
+});
 const visible = ref(false);
 const userList = ref<Array<API.User>>([]);
 const columns = [

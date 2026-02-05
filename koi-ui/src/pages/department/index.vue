@@ -4,6 +4,7 @@ import { ProTable } from '@/components/ProTable/index.ts';
 import { Plus, Refresh } from '@element-plus/icons-vue';
 import { getDepartmentList } from '@/api/department.ts';
 defineOptions({
+  // eslint-disable-next-line vue/multi-word-component-names
   name: 'Department',
 });
 const departmentList = ref<Array<API.Department & { children: Array<API.Department> }>>([]);

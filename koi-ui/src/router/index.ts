@@ -35,6 +35,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: '/user',
         component: User,
+        name: 'User',
         meta: {
           title: '用户管理',
         },
