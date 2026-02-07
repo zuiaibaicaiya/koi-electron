@@ -10,10 +10,10 @@ import {
   session,
 } from 'electron';
 import Store from 'electron-store';
-import { fork } from 'child_process';
 import { join } from 'node:path';
 import { homedir } from 'node:os';
 import process from 'node:process';
+import cluster from 'node:cluster';
 
 app.commandLine.appendSwitch('remote-allow-origins', '*');
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true';
@@ -93,19 +93,23 @@ ipcMain.handle('selectFolder', () => {
   });
 });
 if (!__IS_DEV__) {
-  const configPath = store.path;
-  const { signal } = controller;
-  const koiServer = fork(join(app.getAppPath(), 'koi-server', 'dist', 'main.js'), {
-    signal,
-    env: {
-      NODE_ENV: 'production',
-      configPath,
-    },
-    silent: true,
-  });
-  koiServer.once('error', (err) => {
-    console.log(err);
-  });
+  if (cluster.isPrimary) {
+    cluster.setupPrimary({
+      exec: join(app.getAppPath(), 'koi-server', 'dist', 'main.js'),
+    });
+    const configPath = store.path;
+    const config = {
+      env: {
+        NODE_ENV: 'production',
+        configPath,
+      },
+    };
+    cluster.fork(config);
+    cluster.on('exit', (worker) => {
+      cluster.fork(config);
+      console.log(`worker ${worker.process.pid} died`);
+    });
+  }
 }
 
 if (!gotTheLock) {

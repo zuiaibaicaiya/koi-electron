@@ -1,12 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import cluster from 'node:cluster';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { InitModule } from '@/init/init.module';
 import { InitController } from '@/init/init.controller';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
+  await init();
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
   app.useGlobalPipes(
@@ -38,13 +38,5 @@ async function init() {
   await initController.init();
   await app.close();
 }
-if (cluster.isPrimary) {
-  cluster.fork();
-  cluster.on('exit', (worker) => {
-    cluster.fork();
-    console.log(`worker ${worker.process.pid} died`);
-  });
-  void init();
-} else {
-  void bootstrap();
-}
+
+void bootstrap();
