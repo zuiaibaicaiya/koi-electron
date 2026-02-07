@@ -1,12 +1,9 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { InitModule } from '@/init/init.module';
-import { InitController } from '@/init/init.controller';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
-  await init();
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
   app.useGlobalPipes(
@@ -31,12 +28,6 @@ async function bootstrap() {
   await app.listen(port, () => {
     console.log(`Listening on http://127.0.0.1:${port}/api`);
   });
-}
-async function init() {
-  const app = await NestFactory.createApplicationContext(InitModule);
-  const initController = app.select(InitModule).get(InitController);
-  await initController.init();
-  await app.close();
 }
 
 void bootstrap();

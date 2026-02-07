@@ -10,7 +10,6 @@ import { join } from 'node:path';
 import { PermissionModule } from '@/api/permission/permission.module';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from '@/constants';
-import cluster from 'node:cluster';
 
 @Module({
   imports: [
@@ -28,12 +27,9 @@ import cluster from 'node:cluster';
       useFactory: (configService: ConfigService) => {
         return Promise.resolve<TypeOrmModuleOptions>({
           type: 'sqlite',
-          database: join(
-            configService.get('storage') as string,
-            'koi-electron.sqlite',
-          ),
+          database: join(configService.get('storage') as string, 'koi-electron.sqlite'),
           autoLoadEntities: true,
-          synchronize: cluster.isPrimary,
+          synchronize: true,
         });
       },
       inject: [ConfigService],

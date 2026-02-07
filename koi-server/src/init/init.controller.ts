@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, OnApplicationBootstrap } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import * as bcrypt from 'bcryptjs';
 import { UserService } from '@/api/user/user.service';
@@ -7,11 +7,14 @@ import { RoleService } from '@/api/role/role.service';
 
 @ApiTags('init')
 @Controller('init')
-export class InitController {
+export class InitController implements OnApplicationBootstrap {
   constructor(
     private readonly userService: UserService,
     private readonly roleService: RoleService,
   ) {}
+  async onApplicationBootstrap() {
+    await this.init();
+  }
   async init() {
     const role = await this.roleService.findOne(1);
     if (role) {
