@@ -26,6 +26,7 @@ async function bootstrap() {
 
   const port = process.env.PORT ?? 5166;
   await app.listen(port, () => {
+    process.title = 'koi-server';
     console.log(`Listening on http://127.0.0.1:${port}/api`);
   });
 }
