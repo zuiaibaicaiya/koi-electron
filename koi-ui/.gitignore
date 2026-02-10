@@ -14,5 +14,4 @@ dist/
 .vscode/*
 !.vscode/extensions.json
 .idea
-.turbo
 components.d.ts

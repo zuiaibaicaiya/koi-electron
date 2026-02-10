@@ -1,16 +1,16 @@
 import { defineConfig } from '@rsbuild/core';
 import { pluginVue } from '@rsbuild/plugin-vue';
-import { pluginNodePolyfill } from '@rsbuild/plugin-node-polyfill';
-import { electronRs } from 'electron-rs';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { AntdvNextResolver } from '@antdv-next/auto-import-resolver';
 import Components from 'unplugin-vue-components/rspack';
-import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
-import { pluginSass } from '@rsbuild/plugin-sass';
+import {electronRs} from "electron-rs";
+import { pluginNodePolyfill } from '@rsbuild/plugin-node-polyfill';
 
 // Docs: https://rsbuild.rs/config/
 export default defineConfig({
   plugins: [
     pluginVue(),
-    pluginSass(),
     electronRs({
       ignorePack: true,
       obfuscator: {
@@ -27,13 +27,12 @@ export default defineConfig({
     rspack: (config) => {
       config.plugins?.push(
         Components({
-          resolvers: [ElementPlusResolver()],
+          resolvers: [AntdvNextResolver()],
         }),
       );
       return config;
     },
   },
-
   output: {
     externals: {
       'electron-store': 'commonjs2 electron-store',

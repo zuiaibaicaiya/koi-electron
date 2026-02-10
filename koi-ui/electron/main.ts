@@ -50,8 +50,8 @@ const createWindow = async () => {
     titleBarStyle: 'hidden',
     backgroundColor: nativeTheme.shouldUseDarkColors ? 'black' : 'white',
     titleBarOverlay: {
-      color: '#2f3241',
-      symbolColor: '#74b1be',
+      color: '#2b2b2b',
+      symbolColor: '#7f7f7f',
       height: 40,
     },
     webPreferences: {

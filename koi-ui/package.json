@@ -11,29 +11,32 @@
     "preview": "rsbuild preview"
   },
   "dependencies": {
-    "@element-plus/icons-vue": "^2.3.2",
-    "@vueuse/components": "^14.1.0",
-    "@vueuse/core": "^14.1.0",
-    "axios": "^1.13.2",
+    "@antdv-next/icons": "^1.0.0",
+    "@vueuse/components": "^14.2.0",
+    "@vueuse/core": "^14.2.0",
+    "antdv-next": "^1.0.2",
+    "axios": "^1.13.5",
     "axios-retry": "^4.5.0",
-    "element-plus": "^2.13.1",
+    "install": "^0.13.0",
+    "npm": "^11.9.0",
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.7.1",
     "vue": "^3.5.26",
-    "vue-router": "^4.6.4"
+    "vue-router": "^5.0.2"
   },
   "devDependencies": {
+    "@antdv-next/auto-import-resolver": "^1.0.1",
     "@rsbuild/core": "^1.7.3",
     "@rsbuild/plugin-node-polyfill": "^1.4.4",
-    "@rsbuild/plugin-sass": "^1.5.0",
     "@rsbuild/plugin-vue": "^1.2.6",
     "@vue/eslint-config-typescript": "^14.6.0",
-    "eslint": "^9.39.0",
+    "eslint": "^9.39.1",
     "eslint-plugin-vue": "^10.6.2",
-    "globals": "^16.4.0",
-    "prettier": "^3.6.2",
+    "globals": "^16.5.0",
+    "prettier": "^3.7.3",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.46.2",
-    "unplugin-vue-components": "^30.0.0"
+    "typescript-eslint": "^8.48.0",
+    "unplugin-auto-import": "^21.0.0",
+    "unplugin-vue-components": "^31.0.0"
   }
 }

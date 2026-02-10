@@ -1,10 +1,13 @@
 <template>
-  <el-config-provider :locale="zhCn">
-    <router-view />
-  </el-config-provider>
+  <a-config-provider
+    :theme="{
+      algorithm: theme.darkAlgorithm,
+    }"
+  >
+  <router-view/>
+  </a-config-provider>
 </template>
+
 <script setup lang="ts">
-import { ElConfigProvider } from 'element-plus';
-import zhCn from 'element-plus/es/locale/lang/zh-cn';
+import { theme } from 'antdv-next';
 </script>
-<style scoped></style>

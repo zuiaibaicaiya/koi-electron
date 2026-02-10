@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <h1>setting</h1>
+  <div>SplashPage.vue</div>
 </template>
 
 <style scoped></style>

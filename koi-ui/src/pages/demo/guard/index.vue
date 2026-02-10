@@ -1,7 +1,0 @@
-<script setup lang="ts"></script>
-
-<template>
-  <h1>示例</h1>
-</template>
-
-<style scoped></style>
