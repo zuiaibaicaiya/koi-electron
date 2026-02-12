@@ -4,13 +4,15 @@ import { pluginVue } from '@rsbuild/plugin-vue';
 // @ts-ignore
 import { AntdvNextResolver } from '@antdv-next/auto-import-resolver';
 import Components from 'unplugin-vue-components/rspack';
-import {electronRs} from "electron-rs";
+import { electronRs } from 'electron-rs';
 import { pluginNodePolyfill } from '@rsbuild/plugin-node-polyfill';
+import { pluginSass } from '@rsbuild/plugin-sass';
 
 // Docs: https://rsbuild.rs/config/
 export default defineConfig({
   plugins: [
     pluginVue(),
+    pluginSass(),
     electronRs({
       ignorePack: true,
       obfuscator: {

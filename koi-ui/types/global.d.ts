@@ -2,12 +2,12 @@ declare global {
   namespace API {
     interface Response<T> {
       status: number;
-      message: string;
+      msg: string;
       data: T;
     }
     interface Pagination<T> {
       status: number;
-      message: string;
+      msg: string;
       data: {
         items: Array<T>;
         total: number;

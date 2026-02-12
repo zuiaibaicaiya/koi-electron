@@ -15,14 +15,37 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     component: KoiLayout,
     redirect: '/splash',
+    // redirect: '/home',
     meta: {
       title: '跳转页',
     },
-    children: [],
+    children: [
+      {
+        path: '/home',
+        component: () => import('@/pages/home/HomePage.vue'),
+        meta: {
+          title: '首页',
+        },
+      },
+      {
+        path: '/user',
+        component: () => import('@/pages/user/UserPage.vue'),
+        meta: {
+          title: '用户管理',
+        },
+      },
+    ],
+  },
+  {
+    path: '/login',
+    component: () => import('@/pages/login/LoginPage.vue'),
+    meta: {
+      title: '登录页',
+    },
   },
   {
     path: '/splash',
-    component: ()=>import('@/pages/splash/SplashPage.vue'),
+    component: () => import('@/pages/splash/SplashPage.vue'),
     meta: {
       title: '启动页',
     },
@@ -49,7 +72,7 @@ router.beforeEach(async (to, _from, next) => {
         next({ path: '/login', replace: true });
       } else {
         if (!userStore.user) {
-          const { status, message:msg } = await userStore.getCurrentUser();
+          const { status, message: msg } = await userStore.getCurrentUser();
           if (status && status !== 200) {
             message.error(msg);
             localStorage.clear();
