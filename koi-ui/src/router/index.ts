@@ -22,6 +22,7 @@ const routes: RouteRecordRaw[] = [
     children: [
       {
         path: '/home',
+        name: 'HomePage',
         component: () => import('@/pages/home/HomePage.vue'),
         meta: {
           title: '首页',
@@ -29,6 +30,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         path: '/user',
+        name: 'UserPage',
         component: () => import('@/pages/user/UserPage.vue'),
         meta: {
           title: '用户管理',

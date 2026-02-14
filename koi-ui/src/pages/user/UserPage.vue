@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <h1>user</h1>
+  <div>user</div>
 </template>
 
 <style scoped></style>
