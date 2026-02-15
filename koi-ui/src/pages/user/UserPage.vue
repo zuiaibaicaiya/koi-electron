@@ -27,17 +27,19 @@ const [register, { reload }] = useTable({
 </script>
 
 <template>
-  <pro-table @register="register" rowKey="id">
-    <template #title>
-      <a-button type="primary" @click="reload">reload</a-button>
-    </template>
-    <template #action-bar>
-      <a-button type="primary" @click="reload">reload</a-button>
-    </template>
-    <template #action>
-      <a-button type="primary">btn </a-button>
-    </template>
-  </pro-table>
+  <div>
+    <pro-table @register="register" rowKey="id">
+      <template #title>
+        <a-button type="primary" @click="reload">reload</a-button>
+      </template>
+      <template #action-bar>
+        <a-button type="primary" @click="reload">reload</a-button>
+      </template>
+      <template #action>
+        <a-button type="primary">btn </a-button>
+      </template>
+    </pro-table>
+  </div>
 </template>
 
 <style scoped></style>

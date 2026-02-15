@@ -50,7 +50,7 @@ const createWindow = async () => {
     titleBarStyle: 'hidden',
     backgroundColor: nativeTheme.shouldUseDarkColors ? 'black' : 'white',
     titleBarOverlay: {
-      color: '#2b2b2b',
+      color: 'black',
       symbolColor: '#7f7f7f',
       height: 40,
     },
@@ -65,13 +65,17 @@ const createWindow = async () => {
   const storage = store.get<string>('storage');
   if (process.env['ELECTRON_RENDERER_URL']) {
     if (storage) {
-      await mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL']).then(() => {
-        mainWindow.webContents.openDevTools({ mode: 'bottom' });
-      });
+      await mainWindow
+        .loadURL(process.env['ELECTRON_RENDERER_URL'])
+        .then(() => {
+          mainWindow.webContents.openDevTools({ mode: 'bottom' });
+        });
     } else {
-      await mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'] + '#/setting').then(() => {
-        // mainWindow.webContents.openDevTools({ mode: 'bottom' });
-      });
+      await mainWindow
+        .loadURL(process.env['ELECTRON_RENDERER_URL'] + '#/setting')
+        .then(() => {
+          // mainWindow.webContents.openDevTools({ mode: 'bottom' });
+        });
     }
   } else {
     if (storage) {
