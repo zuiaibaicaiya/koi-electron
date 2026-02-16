@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ProTable } from '@/components/ProTable/src';
-import useTable from '@/components/ProTable/hooks/useTable.ts';
+import useTable from '@/components/ProTable/src/hooks/useTable.ts';
 import { ref } from 'vue';
 import { getUserList } from '@/api/user.ts';
 const columns = ref([
