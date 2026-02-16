@@ -1,10 +1,5 @@
 import { applyDecorators, Type } from '@nestjs/common';
-import {
-  ApiExtraModels,
-  getSchemaPath,
-  ApiProperty,
-  ApiOkResponse,
-} from '@nestjs/swagger';
+import { ApiExtraModels, getSchemaPath, ApiProperty, ApiOkResponse } from '@nestjs/swagger';
 
 export class SuccessDto {
   @ApiProperty({
@@ -15,12 +10,10 @@ export class SuccessDto {
   @ApiProperty({
     description: '消息提示',
   })
-  message: string;
+  msg: string;
 }
 
-export const ApiSuccessResponse = <TModel extends Type<any>>(
-  model?: TModel,
-) => {
+export const ApiSuccessResponse = <TModel extends Type<any>>(model?: TModel) => {
   if (model) {
     return applyDecorators(
       ApiExtraModels(SuccessDto, model),

@@ -22,22 +22,18 @@ function convertDates(obj: any): any {
   return result;
 }
 
-export function success<T>(
-  data: T = {} as T,
-  message: string = '成功！',
-  status = 200,
-) {
+export function success<T>(data: T = {} as T, msg: string = '成功！', status = 200) {
   return {
     status,
-    message,
+    msg,
     data: convertDates(data) as T,
   };
 }
 
-export function error(message: string = '失败！', status = 500) {
+export function error(msg: string = '失败！', status = 500) {
   return {
     status,
-    message,
+    msg,
   };
 }
 

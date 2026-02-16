@@ -11,7 +11,7 @@ export const ApiArrayResponse = <TModel extends Type<any>>(model: TModel) => {
             type: 'number',
             description: '状态码',
           },
-          message: {
+          msg: {
             type: 'string',
             description: '提示消息',
           },

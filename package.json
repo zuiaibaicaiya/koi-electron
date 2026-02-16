@@ -26,7 +26,7 @@
     "electron": "^40.4.1",
     "electron-builder": "^26.0.12",
     "electron-rs": "^1.1.4",
-    "turbo": "^2.8.8"
+    "turbo": "^2.8.9"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.13",

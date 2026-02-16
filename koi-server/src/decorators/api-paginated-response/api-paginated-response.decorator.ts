@@ -1,14 +1,7 @@
 import { applyDecorators, Type } from '@nestjs/common';
-import {
-  ApiExtraModels,
-  getSchemaPath,
-  ApiOkResponse,
-  ApiQuery,
-} from '@nestjs/swagger';
+import { ApiExtraModels, getSchemaPath, ApiOkResponse, ApiQuery } from '@nestjs/swagger';
 
-export const ApiPaginatedResponse = <TModel extends Type<any>>(
-  model: TModel,
-) => {
+export const ApiPaginatedResponse = <TModel extends Type<any>>(model: TModel) => {
   return applyDecorators(
     ApiExtraModels(model),
     ApiQuery({
@@ -32,7 +25,7 @@ export const ApiPaginatedResponse = <TModel extends Type<any>>(
             type: 'number',
             description: '状态码',
           },
-          message: {
+          msg: {
             type: 'string',
             description: '提示消息',
           },
