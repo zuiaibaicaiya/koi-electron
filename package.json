@@ -65,6 +65,13 @@
         }
       }
     },
+    "mac": {
+      "target": [
+        "dmg",
+        "pkg"
+      ],
+      "category": "public.app-category.developer-tools"
+    },
     "directories": {
       "output": "build-electron"
     },
@@ -72,9 +79,6 @@
     "files": [
       "koi-ui/dist",
       "koi-server/dist"
-    ],
-    "dmg": {
-      "icon": "./logo.icns"
-    }
+    ]
   }
 }

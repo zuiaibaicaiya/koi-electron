@@ -7,31 +7,22 @@ class ByteNodeWebpackPlugin {
     this.options = options;
   }
   apply(compiler) {
-    compiler.hooks.afterEmit.tap(
-      'ByteNodeWebpackPlugin',
-      async (compilation) => {
-        const outputPath = compilation.outputOptions.path;
-        const outputFile = path.join(
-          outputPath,
-          compilation.outputOptions.filename,
-        );
-        try {
-          // 使用 bytenode 编译生成的 JS 文件
-          await bytenode.compileFile({
-            electron: this.options.electron,
-            filename: outputFile,
-          });
-          // 删除原始的 JS 文件，只保留 .jsc 文件
-          fs.unlinkSync(outputFile);
-          fs.writeFileSync(
-            outputFile,
-            "require('bytenode');module.exports = require('./main.jsc')",
-          );
-        } catch (error) {
-          console.error('bytenode compilation failed:', error);
-        }
-      },
-    );
+    compiler.hooks.afterEmit.tap('ByteNodeWebpackPlugin', async (compilation) => {
+      const outputPath = compilation.outputOptions.path;
+      const outputFile = path.join(outputPath, compilation.outputOptions.filename);
+      try {
+        // 使用 bytenode 编译生成的 JS 文件
+        await bytenode.compileFile({
+          electron: this.options.electron,
+          filename: outputFile,
+        });
+        // 删除原始的 JS 文件，只保留 .jsc 文件
+        fs.unlinkSync(outputFile);
+        fs.writeFileSync(outputFile, "require('bytenode');module.exports = require('./main.jsc')");
+      } catch (error) {
+        console.error('bytenode compilation failed:', error);
+      }
+    });
   }
 }
 
@@ -43,6 +34,8 @@ module.exports = (options) => {
   );
   return {
     ...options,
+    // devtool: 'inline-source-map',
+    devtool: 'hidden-source-map',
     externals: {
       sqlite3: 'commonjs sqlite3',
       '@nestjs/swagger': 'commonjs @nestjs/swagger',
