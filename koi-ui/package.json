@@ -14,7 +14,7 @@
     "@antdv-next/icons": "^1.0.0",
     "@vueuse/components": "^14.2.0",
     "@vueuse/core": "^14.2.0",
-    "antdv-next": "^1.0.3",
+    "antdv-next": "^1.0.5",
     "axios": "^1.13.5",
     "axios-retry": "^4.5.0",
     "install": "^0.13.0",

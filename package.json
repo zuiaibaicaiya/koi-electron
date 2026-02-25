@@ -23,10 +23,10 @@
   ],
   "packageManager": "npm@10.9.2",
   "devDependencies": {
-    "electron": "^40.4.1",
+    "electron": "^40.6.1",
     "electron-builder": "^26.0.12",
     "electron-rs": "^1.1.5",
-    "turbo": "^2.8.9"
+    "turbo": "^2.8.10"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.13",
